@@ -1,0 +1,23 @@
+Diseño lógico para la BD "alquiler_viviendas"
+
+PROPIETARIO (id, DNI, nombre, email, telefono):
+    PK: id
+    UK: DNI
+
+VIVIENDA (codigo, id_propietario, direccion, precio, superficie, descripcion, tipo, acepta_mascotas):
+    PK: codigo
+    FK: id_propietario -> PROPIETARIO
+    FK: tipo -> tipo_vivienda
+
+TIPO_VIVIENDA (id, tipo):
+    PK: id
+
+INQUILINO (id, DNI, nombre, email, telefono, mascota):
+    PK: id
+    UK: DNI
+
+CONTRATA (id_inquilino, codigo_vivienda, fecha_inicio, fecha_fin, precio, estado):
+    PK: (id_inquilino, codigo_vivienda)
+    FK: id_inquilino -> INQUILINO
+    FK: codigo_vivienda -> VIVIENDA
+
