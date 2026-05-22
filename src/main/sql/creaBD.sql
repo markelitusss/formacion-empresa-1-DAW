@@ -18,6 +18,12 @@ CREATE TABLE propietario (
     CONSTRAINT uk_dni_propietario UNIQUE(DNI)
 );
 
+-- Tabla tipo
+CREATE TABLE tipo_vivienda (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(50)
+);
+
 -- Tabla vivienda
 CREATE TABLE vivienda (
     codigo VARCHAR(50) PRIMARY KEY,
@@ -30,12 +36,6 @@ CREATE TABLE vivienda (
     acepta_mascota BOOL,
     CONSTRAINT fk_vivienda_propietario FOREIGN KEY(id_propietario) REFERENCES propietario(id),
     CONSTRAINT fk_vivianda_tipo FOREIGN KEY(tipo) REFERENCES tipo_vivienda(id)
-);
-
--- Tabla tipo
-CREATE TABLE tipo_vivienda (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    tipo VARCHAR(50)
 );
 
 -- Tabla inquilino
@@ -57,9 +57,9 @@ CREATE TABLE contrata (
     fecha_fin DATE,
     precio DECIMAL(7, 2),
     estado ENUM('Pendiente', 'Activo', 'Vencido'),
+    CONSTRAINT PRIMARY KEY(id_inquilino, codigo_vivienda),
     CONSTRAINT fk_contrata_inquilino FOREIGN KEY(id_inquilino) REFERENCES inquilino(id),
     CONSTRAINT fk_contrata_vivienda FOREIGN KEY(codigo_vivienda) REFERENCES vivienda(codigo)
-
 );
 
 -- Creación usuario
