@@ -49,6 +49,11 @@ CREATE TABLE inquilino (
     CONSTRAINT uk_dni_inquilino UNIQUE(DNI)
 );
 
+CREATE TABLE tipo_estado (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    estado VARCHAR(50)
+)
+
 -- Tabla contrata
 CREATE TABLE contrata (
     id_inquilino INT,
@@ -56,13 +61,15 @@ CREATE TABLE contrata (
     fecha_inicio DATE,
     fecha_fin DATE,
     precio DECIMAL(7, 2),
-    estado ENUM('Pendiente', 'Activo', 'Vencido'),
+    estado INT,
     CONSTRAINT PRIMARY KEY(id_inquilino, codigo_vivienda),
+    CONSTRAINT fk_contrata_estado FOREIGN KEY(estado) REFERENCES tipo_estado(id),
     CONSTRAINT fk_contrata_inquilino FOREIGN KEY(id_inquilino) REFERENCES inquilino(id),
     CONSTRAINT fk_contrata_vivienda FOREIGN KEY(codigo_vivienda) REFERENCES vivienda(codigo)
 );
 
 -- Creación usuario
+DROP USER usuario@'%';
 CREATE USER usuario@'%' IDENTIFIED BY 'user1234';
 GRANT INSERT, DELETE, UPDATE, SELECT ON alquiler_viviendas.* TO usuario@'%';
 GRANT EXECUTE ON alquiler_viviendas.* TO usuario@'%';

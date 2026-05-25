@@ -34,9 +34,14 @@ INSERT INTO inquilino VALUES
     (NULL, '66233098L', 'Victoria Carrillo', 'vic.carrillo0@gmail.com', '722869010', 1),
     (NULL, '32566954S', 'Alejandro Gómez', 'al.gomezzz@gmail.com', '620900659', 1);
 
+INSERT INTO tipo_estado VALUES
+    (NULL, 'Pendiente'),
+    (NULL, 'Activo'),
+    (NULL, 'Vencido');
+
 INSERT INTO contrata VALUES
-    (1, 'AAA-01', '2026-05-01', '2026-12-31', 800, 'Activo'),
-    (2, 'AAA-03', '2026-04-01', '2026-08-01', 625, 'Activo'),
-    (3, 'AAA-02', NULL, NULL, 600, 'Pendiente'),
-    (4, 'AAC-01', NULL, NULL, 1200, 'Pendiente'),
-    (5, 'AAB-01', '2026-06-01', '2026-09-01', 950, 'Pendiente');
+    (1, 'AAA-01', '2026-05-01', '2026-12-31', 800, 2),
+    (2, 'AAA-03', '2026-04-01', '2026-08-01', 625, 2),
+    (3, 'AAA-02', NULL, NULL, 600, 1),
+    (4, 'AAC-01', NULL, NULL, 1200, 1),
+    (5, 'AAB-01', '2026-06-01', '2026-09-01', 950, 1);

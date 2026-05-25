@@ -30,6 +30,10 @@ public class MenuPropietarios extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         TablePropietarios = new javax.swing.JTable();
         btnAtras = new javax.swing.JButton();
+        btnConsultar = new javax.swing.JButton();
+        btnInsertar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -71,6 +75,18 @@ public class MenuPropietarios extends javax.swing.JPanel {
             }
         });
         add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+
+        btnConsultar.setText("Consultar");
+        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 400, -1, -1));
+
+        btnInsertar.setText("Insertar");
+        add(btnInsertar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, -1, -1));
+
+        btnModificar.setText("Modificar");
+        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, -1));
+
+        btnEliminar.setText("Eliminar");
+        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 400, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
@@ -81,6 +97,10 @@ public class MenuPropietarios extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablePropietarios;
     private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnInsertar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
