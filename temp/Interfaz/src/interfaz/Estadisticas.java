@@ -29,11 +29,8 @@ public class Estadisticas extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         btnAtras = new javax.swing.JButton();
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setText("ESTADISTICAS");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, -1, -1));
 
         btnAtras.setText("Volver");
         btnAtras.addActionListener(new java.awt.event.ActionListener() {
@@ -41,7 +38,26 @@ public class Estadisticas extends javax.swing.JPanel {
                 btnAtrasActionPerformed(evt);
             }
         });
-        add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(btnAtras))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(330, 330, 330)
+                .addComponent(jLabel1))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(btnAtras)
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed

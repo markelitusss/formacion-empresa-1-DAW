@@ -241,7 +241,7 @@ sp: BEGIN
     END IF;
 
     -- si el propietario no existe 
-    IF p_id_propietario NOT IN (SELECT id FROM propietario) THEN
+    IF p_id_propietario NOT IN (SELECT id_propietario FROM vivienda) THEN
         SET p_err = 3;
         LEAVE sp;
     END IF;

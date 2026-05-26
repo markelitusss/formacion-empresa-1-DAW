@@ -34,13 +34,12 @@ public class MenuInquilinos extends javax.swing.JPanel {
         btnInsertar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(800, 600));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setText("INQUILINOS ENCONTRADOS");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, -1, -1));
 
         btnAtras.setText("Volver");
         btnAtras.addActionListener(new java.awt.event.ActionListener() {
@@ -48,7 +47,6 @@ public class MenuInquilinos extends javax.swing.JPanel {
                 btnAtrasActionPerformed(evt);
             }
         });
-        add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
         TableInquilinos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -75,19 +73,59 @@ public class MenuInquilinos extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(TableInquilinos);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 740, 220));
-
         btnConsultar.setText("Consultar");
-        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 400, -1, -1));
 
         btnInsertar.setText("Insertar");
-        add(btnInsertar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, -1, -1));
 
         btnModificar.setText("Modificar");
-        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, -1));
 
         btnEliminar.setText("Eliminar");
-        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 400, -1, -1));
+
+        btnExportar.setText("Exportar");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(btnAtras)
+                .addGap(578, 578, 578)
+                .addComponent(btnExportar))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(270, 270, 270)
+                .addComponent(jLabel1))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(btnConsultar)
+                .addGap(111, 111, 111)
+                .addComponent(btnInsertar)
+                .addGap(119, 119, 119)
+                .addComponent(btnModificar)
+                .addGap(112, 112, 112)
+                .addComponent(btnEliminar))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAtras)
+                    .addComponent(btnExportar))
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnConsultar)
+                    .addComponent(btnInsertar)
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar)))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
@@ -100,6 +138,7 @@ public class MenuInquilinos extends javax.swing.JPanel {
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;

@@ -16,6 +16,20 @@ public class MenuPropietarios extends javax.swing.JPanel {
     public MenuPropietarios() {
         initComponents();
     }
+    
+    public void deshabilitarBtns() {
+        btnConsultar.setEnabled(false);
+        btnInsertar.setEnabled(false);
+        btnModificar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+    }
+    
+    public void habilitarBtns() {
+        btnConsultar.setEnabled(true);
+        btnInsertar.setEnabled(true);
+        btnModificar.setEnabled(true);
+        btnEliminar.setEnabled(true);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,6 +40,28 @@ public class MenuPropietarios extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFrameInsertar = new javax.swing.JFrame();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txtDNI_ins = new javax.swing.JTextField();
+        txtNombre_ins = new javax.swing.JTextField();
+        txtEmail_ins = new javax.swing.JTextField();
+        txtTelefono_ins = new javax.swing.JTextField();
+        btnAceptar_ins = new javax.swing.JButton();
+        jFrameModificar = new javax.swing.JFrame();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        txtID_mod = new javax.swing.JTextField();
+        txtDNI_mod = new javax.swing.JTextField();
+        txtNombre_mod = new javax.swing.JTextField();
+        txtEmail_mod = new javax.swing.JTextField();
+        txtTelefono_mod = new javax.swing.JTextField();
+        btnAceptar_mod = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablePropietarios = new javax.swing.JTable();
@@ -34,12 +70,161 @@ public class MenuPropietarios extends javax.swing.JPanel {
         btnInsertar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jFrameInsertar.setTitle("Inserción");
+        jFrameInsertar.setAlwaysOnTop(true);
+        jFrameInsertar.setPreferredSize(new java.awt.Dimension(400, 400));
+        jFrameInsertar.setSize(new java.awt.Dimension(400, 400));
+
+        jLabel3.setText("DNI:");
+
+        jLabel2.setText("Nombre:");
+
+        jLabel4.setText("E-mail:");
+
+        jLabel5.setText("Telefono:");
+
+        btnAceptar_ins.setText("Aceptar");
+
+        javax.swing.GroupLayout jFrameInsertarLayout = new javax.swing.GroupLayout(jFrameInsertar.getContentPane());
+        jFrameInsertar.getContentPane().setLayout(jFrameInsertarLayout);
+        jFrameInsertarLayout.setHorizontalGroup(
+            jFrameInsertarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrameInsertarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3)
+                .addGap(51, 51, 51)
+                .addComponent(txtDNI_ins, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameInsertarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel2)
+                .addGap(28, 28, 28)
+                .addComponent(txtNombre_ins, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameInsertarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel4)
+                .addGap(44, 44, 44)
+                .addComponent(txtEmail_ins, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameInsertarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel5)
+                .addGap(25, 25, 25)
+                .addComponent(txtTelefono_ins, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameInsertarLayout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(btnAceptar_ins, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jFrameInsertarLayout.setVerticalGroup(
+            jFrameInsertarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrameInsertarLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(jFrameInsertarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(txtDNI_ins, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jFrameInsertarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(txtNombre_ins, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jFrameInsertarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(txtEmail_ins, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jFrameInsertarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(txtTelefono_ins, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addComponent(btnAceptar_ins))
+        );
+
+        jFrameModificar.setTitle("Modificación");
+        jFrameModificar.setAlwaysOnTop(true);
+        jFrameModificar.setPreferredSize(new java.awt.Dimension(400, 400));
+
+        jLabel6.setText("ID:");
+
+        jLabel7.setText("DNI:");
+
+        jLabel8.setText("Nombre:");
+
+        jLabel9.setText("E-mail:");
+
+        jLabel10.setText("Telefono:");
+
+        btnAceptar_mod.setText("Aceptar");
+        btnAceptar_mod.setMaximumSize(new java.awt.Dimension(79, 25));
+        btnAceptar_mod.setMinimumSize(new java.awt.Dimension(79, 25));
+        btnAceptar_mod.setPreferredSize(new java.awt.Dimension(79, 25));
+
+        javax.swing.GroupLayout jFrameModificarLayout = new javax.swing.GroupLayout(jFrameModificar.getContentPane());
+        jFrameModificar.getContentPane().setLayout(jFrameModificarLayout);
+        jFrameModificarLayout.setHorizontalGroup(
+            jFrameModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrameModificarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel6)
+                .addGap(61, 61, 61)
+                .addComponent(txtID_mod, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameModificarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel7)
+                .addGap(51, 51, 51)
+                .addComponent(txtDNI_mod, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameModificarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel8)
+                .addGap(24, 24, 24)
+                .addComponent(txtNombre_mod, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameModificarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel9)
+                .addGap(40, 40, 40)
+                .addComponent(txtEmail_mod, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameModificarLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel10)
+                .addGap(21, 21, 21)
+                .addComponent(txtTelefono_mod, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jFrameModificarLayout.createSequentialGroup()
+                .addGap(140, 140, 140)
+                .addComponent(btnAceptar_mod, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jFrameModificarLayout.setVerticalGroup(
+            jFrameModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrameModificarLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(jFrameModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(txtID_mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jFrameModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(txtDNI_mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jFrameModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(txtNombre_mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(jFrameModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(txtEmail_mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(jFrameModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(txtTelefono_mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(btnAceptar_mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                MenuPropietarios.this.componentShown(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setText("PROPIETARIOS ENCONTRADOS");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, -1, -1));
 
         TablePropietarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -66,42 +251,164 @@ public class MenuPropietarios extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(TablePropietarios);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 740, 220));
-
         btnAtras.setText("Volver");
         btnAtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtrasActionPerformed(evt);
             }
         });
-        add(btnAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
         btnConsultar.setText("Consultar");
-        add(btnConsultar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 400, -1, -1));
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnInsertar.setText("Insertar");
-        add(btnInsertar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 400, -1, -1));
+        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarActionPerformed(evt);
+            }
+        });
 
         btnModificar.setText("Modificar");
-        add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, -1));
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setText("Eliminar");
-        add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 400, -1, -1));
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnExportar.setText("Exportar");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(btnAtras)
+                .addGap(578, 578, 578)
+                .addComponent(btnExportar))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(270, 270, 270)
+                .addComponent(jLabel1))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(btnConsultar)
+                .addGap(111, 111, 111)
+                .addComponent(btnInsertar)
+                .addGap(119, 119, 119)
+                .addComponent(btnModificar)
+                .addGap(112, 112, 112)
+                .addComponent(btnEliminar))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAtras)
+                    .addComponent(btnExportar))
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnConsultar)
+                    .addComponent(btnInsertar)
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar)))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         setVisible(false);
     }//GEN-LAST:event_btnAtrasActionPerformed
 
+    private void componentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentShown
+        // TODO: SELECT * FROM table
+    }//GEN-LAST:event_componentShown
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        deshabilitarBtns();
+        
+        // TODO
+        
+        habilitarBtns();
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
+        deshabilitarBtns();
+        
+        jFrameInsertar.pack();
+        jFrameInsertar.setLocationRelativeTo(null);
+        jFrameInsertar.setVisible(true);
+        
+        habilitarBtns();
+    }//GEN-LAST:event_btnInsertarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        deshabilitarBtns();
+        
+        jFrameModificar.pack();
+        jFrameModificar.setLocationRelativeTo(null);
+        jFrameModificar.setVisible(true);
+        
+        habilitarBtns();
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        deshabilitarBtns();
+        
+        // TODO
+        
+        habilitarBtns();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TablePropietarios;
+    private javax.swing.JButton btnAceptar_ins;
+    private javax.swing.JButton btnAceptar_mod;
     private javax.swing.JButton btnAtras;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JFrame jFrameInsertar;
+    private javax.swing.JFrame jFrameModificar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField txtDNI_ins;
+    private javax.swing.JTextField txtDNI_mod;
+    private javax.swing.JTextField txtEmail_ins;
+    private javax.swing.JTextField txtEmail_mod;
+    private javax.swing.JTextField txtID_mod;
+    private javax.swing.JTextField txtNombre_ins;
+    private javax.swing.JTextField txtNombre_mod;
+    private javax.swing.JTextField txtTelefono_ins;
+    private javax.swing.JTextField txtTelefono_mod;
     // End of variables declaration//GEN-END:variables
 }

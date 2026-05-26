@@ -1,0 +1,13 @@
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/controller/Conexion.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/controller/Consultas.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/model/Contrato.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/model/Inquilino.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/model/Propietario.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/model/Vivienda.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/view/Estadisticas.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/view/Main.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/view/MenuContratos.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/view/MenuInquilinos.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/view/MenuPrincipal.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/view/MenuPropietarios.java
+/home/marcanram/formacion_empresa/src/main/java/formacion_empresa/view/MenuViviendas.java
