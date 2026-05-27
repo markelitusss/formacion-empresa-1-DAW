@@ -86,6 +86,11 @@ public class MenuPropietarios extends javax.swing.JPanel {
         jLabel5.setText("Telefono:");
 
         btnAceptar_ins.setText("Aceptar");
+        btnAceptar_ins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptar_insActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jFrameInsertarLayout = new javax.swing.GroupLayout(jFrameInsertar.getContentPane());
         jFrameInsertar.getContentPane().setLayout(jFrameInsertarLayout);
@@ -153,9 +158,11 @@ public class MenuPropietarios extends javax.swing.JPanel {
         jLabel10.setText("Telefono:");
 
         btnAceptar_mod.setText("Aceptar");
-        btnAceptar_mod.setMaximumSize(new java.awt.Dimension(79, 25));
-        btnAceptar_mod.setMinimumSize(new java.awt.Dimension(79, 25));
-        btnAceptar_mod.setPreferredSize(new java.awt.Dimension(79, 25));
+        btnAceptar_mod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptar_modActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jFrameModificarLayout = new javax.swing.GroupLayout(jFrameModificar.getContentPane());
         jFrameModificar.getContentPane().setLayout(jFrameModificarLayout);
@@ -214,7 +221,7 @@ public class MenuPropietarios extends javax.swing.JPanel {
                     .addComponent(jLabel10)
                     .addComponent(txtTelefono_mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addComponent(btnAceptar_mod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnAceptar_mod))
         );
 
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -338,7 +345,7 @@ public class MenuPropietarios extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void componentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentShown
-        // TODO: SELECT * FROM table
+        // TODO: SELECT * FROM propietario
     }//GEN-LAST:event_componentShown
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
@@ -355,8 +362,6 @@ public class MenuPropietarios extends javax.swing.JPanel {
         jFrameInsertar.pack();
         jFrameInsertar.setLocationRelativeTo(null);
         jFrameInsertar.setVisible(true);
-        
-        habilitarBtns();
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -365,8 +370,6 @@ public class MenuPropietarios extends javax.swing.JPanel {
         jFrameModificar.pack();
         jFrameModificar.setLocationRelativeTo(null);
         jFrameModificar.setVisible(true);
-        
-        habilitarBtns();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -376,6 +379,14 @@ public class MenuPropietarios extends javax.swing.JPanel {
         
         habilitarBtns();
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnAceptar_insActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptar_insActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAceptar_insActionPerformed
+
+    private void btnAceptar_modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptar_modActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAceptar_modActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

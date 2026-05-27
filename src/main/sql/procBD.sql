@@ -534,7 +534,7 @@ DELIMITER ;
 
 DELIMITER //
 DROP PROCEDURE sp_del_contrato //
-CREATE PROCEDURE sp_del_contrato(IN p_id_inquilino INT, IN p_codigo_vivienda INT, OUT p_err INT)
+CREATE PROCEDURE sp_del_contrato(IN p_id_inquilino INT, IN p_codigo_vivienda VARCHAR(50), OUT p_err INT)
 sp: BEGIN
     -- el procedimiento elimina de la tabla contrato el registro con el ID de inquilino y el codigo de vivienda indicados
 
