@@ -4,11 +4,20 @@
  */
 package formacion_empresa.view;
 
+import java.sql.*;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import formacion_empresa.controller.*;
+
 /**
  *
  * @author marcanram
  */
 public class MenuContratos extends javax.swing.JPanel {
+
+    DefaultTableModel modelo;
     
     public void deshabilitarBtns() {
         btnConsultar.setEnabled(false);
@@ -29,6 +38,8 @@ public class MenuContratos extends javax.swing.JPanel {
      */
     public MenuContratos() {
         initComponents();
+        modelo = (DefaultTableModel) TableContratos.getModel();
+        setVisible(false);
     }
 
     /**
@@ -158,6 +169,12 @@ public class MenuContratos extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                MenuContratos.this.componentShown(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setText("CONTRATOS ENCONTRADOS");
 
@@ -263,8 +280,31 @@ public class MenuContratos extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void componentShown(java.awt.event.ComponentEvent evt) {
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            ResultSet rs = Consultas.consultarTodo(con, "contrata");
+            ResultSet rsEstado = Consultas.consultarCustom(con, "SELECT t.estado, c.codigo_vivienda FROM tipo_estado t INNER JOIN contrata c ON t.id = c.estado ORDER BY c.codigo_vivienda");
+
+            if (rs == null || rsEstado == null) {
+                throw new SQLException();
+            }
+            else {
+                while (rs.next() && rsEstado.next()) {
+                    modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rsEstado.getString(1)});
+                }
+
+                TableContratos.setModel(modelo);
+            }
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al obtener los datos de la tabla Contrata", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         setVisible(false);
+        modelo.setRowCount(0);
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed

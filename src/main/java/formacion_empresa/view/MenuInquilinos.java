@@ -4,11 +4,20 @@
  */
 package formacion_empresa.view;
 
+import java.sql.*;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import formacion_empresa.controller.*;
+
 /**
  *
  * @author marcanram
  */
 public class MenuInquilinos extends javax.swing.JPanel {
+
+    DefaultTableModel modelo;
     
     public void deshabilitarBtns() {
         btnConsultar.setEnabled(false);
@@ -29,6 +38,8 @@ public class MenuInquilinos extends javax.swing.JPanel {
      */
     public MenuInquilinos() {
         initComponents();
+        modelo = (DefaultTableModel) TableInquilinos.getModel();
+        setVisible(false);
     }
 
     /**
@@ -393,16 +404,79 @@ public class MenuInquilinos extends javax.swing.JPanel {
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         setVisible(false);
+        modelo.setRowCount(0);
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void componentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentShown
-        // TODO: SELECT * FROM inquilino 
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            ResultSet rs = Consultas.consultarTodo(con, "inquilino");
+
+            if (rs == null) {
+                throw new SQLException();
+            }
+            else {
+                int rowCount = 0;
+
+                while (rs.next()) {
+                    modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+                    Object mascota;
+                    if (rs.getBoolean(6)) {
+                        mascota = "Si";
+                    }
+                    else {
+                        mascota = "No";
+                    }
+
+                    modelo.setValueAt(mascota, rowCount, 5);
+                    rowCount++;
+                }
+                
+                TableInquilinos.setModel(modelo);
+            }
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al obtener los datos de la tabla Inquilino", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_componentShown
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         deshabilitarBtns();
         
-        // TODO
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String id = JOptionPane.showInputDialog(null, "Introduzca el ID del inquilino:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+            ResultSet rs = CRUDinquilino.consultar(con, Integer.parseInt(id));
+
+            if (rs == null) {
+                throw new SQLException();
+            }
+            else if (rs.next() && rs.getInt(1) == -2) {
+                throw new NullPointerException();
+            }
+            else {
+                modelo.setRowCount(0);
+                modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+                Object mascota;
+                if (rs.getBoolean(6)) {
+                    mascota = "Si";
+                }
+                else {
+                    mascota = "No";
+                }
+
+                modelo.setValueAt(mascota, 0, 5);
+            }
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al consultar la tabla Inquilino", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         habilitarBtns();
     }//GEN-LAST:event_btnConsultarActionPerformed

@@ -5,9 +5,9 @@
 
 -- CÓDIGOS ERROR ------------------------------
 -- 0. Sin errores
--- 1. Error genérico
--- 2. El ID/codigo solicitado no existe
--- 3. La clave ajena no existe en la tabla de origen
+-- -1. Error genérico
+-- -2. El ID/codigo solicitado no existe
+-- -3. La clave ajena no existe en la tabla de origen
 
 -- Operaciones CRUD propietario
 DELIMITER //
@@ -20,12 +20,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_id NOT IN (SELECT id FROM propietario) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -52,7 +52,7 @@ BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     SET @declaracion = 'INSERT INTO propietario VALUES (NULL, ?, ?, ?, ?)';
@@ -89,12 +89,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_id NOT IN (SELECT id FROM propietario) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -123,12 +123,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_id NOT IN (SELECT id FROM propietario) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -148,12 +148,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el codigo solicitado
     IF p_codigo NOT IN (SELECT codigo FROM vivienda) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -182,12 +182,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- si el propietario no existe 
     IF p_id_propietario NOT IN (SELECT id FROM propietario) THEN
-        SET p_err = 3;
+        SET p_err = -3;
         LEAVE sp;
     END IF;
 
@@ -231,18 +231,18 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el codigo solicitado
     IF p_codigo NOT IN (SELECT codigo FROM vivienda) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
     -- si el propietario no existe 
     IF p_id_propietario NOT IN (SELECT id_propietario FROM vivienda) THEN
-        SET p_err = 3;
+        SET p_err = -3;
         LEAVE sp;
     END IF;
 
@@ -274,12 +274,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_codigo NOT IN (SELECT codigo FROM vivienda) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -299,12 +299,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = --1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_id NOT IN (SELECT id FROM inquilino) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -332,7 +332,7 @@ BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     SET @declaracion = 'INSERT INTO inquilino VALUES (NULL, ?, ?, ?, ?, ?)';
@@ -371,12 +371,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_id NOT IN (SELECT id FROM inquilino) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -406,12 +406,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_id NOT IN (SELECT id FROM inquilino) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -431,12 +431,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF id_inquilino NOT IN (SELECT id_inquilino FROM contrata) OR codigo_vivienda NOT IN (SELECT codigo_vivienda FROM contrata) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 
@@ -456,15 +456,21 @@ CREATE PROCEDURE sp_ins_contrato(
     IN p_estado VARCHAR(50),
     OUT p_err INT
 )
-BEGIN
+sp: BEGIN
     -- el procedimiento utiliza SQL dinámico para introducir los valores
     -- del nuevo registro en la tabla
 
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
+
+    -- en caso de que el inquilino o la viivenda no existan
+    IF p_id_inquilino NOT IN (SELECT id FROM inquilino) OR p_codigo_vivienda NOT IN (SELECT codigo FROM vivienda) THEN
+        SET p_err = -3;
+        LEAVE sp;
+    END IF;
 
     SET @declaracion = 'INSERT INTO contrata VALUES (?, ?, ?, ?, ?, ?)';
     PREPARE prepared_stmt FROM @declaracion;
@@ -504,12 +510,18 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_id_inquilino NOT IN (SELECT id_inquilino FROM contrata) OR p_codigo_vivienda NOT IN (SELECT codigo_vivienda FROM contrata) THEN
         SET p_err = 2;
+        LEAVE sp;
+    END IF;
+
+    -- en caso de que el inquilino o la viivenda nuevas no existan
+    IF p_new_id_inquilino NOT IN (SELECT id FROM inquilino) OR p_new_codigo_vivienda NOT IN (SELECT codigo FROM vivienda) THEN
+        SET p_err = -3;
         LEAVE sp;
     END IF;
 
@@ -541,12 +553,12 @@ sp: BEGIN
     -- tratamiento de errores
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-        SET p_err = 1;
+        SET p_err = -1;
     END;
 
     -- en caso de que no exista el id solicitado
     IF p_id_inquilino NOT IN (SELECT id_inquilino FROM contrata) OR p_codigo_vivienda NOT IN (SELECT codigo_vivienda FROM contrata) THEN
-        SET p_err = 2;
+        SET p_err = -2;
         LEAVE sp;
     END IF;
 

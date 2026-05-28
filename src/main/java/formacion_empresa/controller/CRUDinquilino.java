@@ -1,6 +1,6 @@
 /********************************/
 /*  Formación Empresa           */
-/*  Funciones CRUD propietario  */
+/*  Funciones CRUD inquilino    */
 /*  Markel Canales Ramos 1º DAW */
 /********************************/
 
@@ -8,11 +8,11 @@ package formacion_empresa.controller;
 
 import java.sql.*;
 
-public class CRUDpropietario {
+public class CRUDinquilino {
     
     public static ResultSet consultar(Connection con, int id) {
         try {
-            String sql = "CALL sp_get_propietario(?, ?)";
+            String sql = "CALL sp_get_inquilino(?, ?)";
             CallableStatement cs = con.prepareCall(sql);
 
             cs.setInt(1, id);

@@ -9,8 +9,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import formacion_empresa.controller.Conexion;
-import formacion_empresa.controller.Consultas;
+import formacion_empresa.controller.*;
 
 /**
  *
@@ -26,6 +25,7 @@ public class MenuPropietarios extends javax.swing.JPanel {
     public MenuPropietarios() {
         initComponents();
         modelo = (DefaultTableModel) TablePropietarios.getModel();
+        setVisible(false);
     }
     
     public void deshabilitarBtns() {
@@ -355,35 +355,58 @@ public class MenuPropietarios extends javax.swing.JPanel {
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         setVisible(false);
+        modelo.setRowCount(0);
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void componentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_componentShown
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            ResultSet rs = Consultas.consultarTodo(con, "propietario");
 
-        Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
-        System.out.println("SHOWN");
-        ResultSet rs = Consultas.consultarTodo(con, "propietario");
-
-        if (rs == null) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al obtener los datos de la tabla Propietario");
-        }
-        else {
-            try {
+            if (rs == null) {
+                throw new SQLException();
+            }
+            else {
                 while (rs.next()) {
                     modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
                 }
-                TablePropietarios.setModel(modelo);
+            TablePropietarios.setModel(modelo);
             }
-            catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al obtener los datos de la tabla Propietario");
-            }
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al obtener los datos de la tabla Propietario", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_componentShown
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         deshabilitarBtns();
-        
-        // TODO
+
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String id = JOptionPane.showInputDialog(null, "Introduzca el ID del propietario:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+            ResultSet rs = CRUDpropietario.consultar(con, Integer.parseInt(id));
+
+            if (rs == null) {
+                throw new SQLException();
+            }
+            else if (rs.next() && rs.getInt(1) == -2) {
+                throw new NullPointerException();
+            }
+            else {
+                modelo.setRowCount(0);
+                modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+            }
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al consultar la tabla Propietario", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         habilitarBtns();
     }//GEN-LAST:event_btnConsultarActionPerformed

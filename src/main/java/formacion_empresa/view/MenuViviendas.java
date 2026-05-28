@@ -4,11 +4,20 @@
  */
 package formacion_empresa.view;
 
+import java.sql.*;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+import formacion_empresa.controller.*;
+
 /**
  *
  * @author marcanram
  */
 public class MenuViviendas extends javax.swing.JPanel {
+
+    DefaultTableModel modelo;
     
     public void deshabilitarBtns() {
         btnConsultar.setEnabled(false);
@@ -29,6 +38,8 @@ public class MenuViviendas extends javax.swing.JPanel {
      */
     public MenuViviendas() {
         initComponents();
+        modelo = (DefaultTableModel) TableViviendas.getModel();
+        setVisible(false);
     }
 
     /**
@@ -203,6 +214,11 @@ public class MenuViviendas extends javax.swing.JPanel {
         );
 
         setPreferredSize(new java.awt.Dimension(800, 600));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                MenuViviendas.this.componentShown(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setText("VIVIENDAS ENCONTRADAS");
@@ -309,14 +325,81 @@ public class MenuViviendas extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void componentShown(java.awt.event.ComponentEvent evt) {
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            ResultSet rs = Consultas.consultarTodo(con, "vivienda");
+            ResultSet rsTipo = Consultas.consultarCustom(con, "SELECT t.tipo, v.codigo FROM tipo_vivienda t INNER JOIN vivienda v ON t.id = v.tipo ORDER BY v.codigo");
+
+            if (rs == null || rsTipo == null) {
+                throw new SQLException();
+            }
+            else {
+                int rowCount = 0;
+
+                while (rs.next() && rsTipo.next()) {
+                    modelo.addRow(new Object[]{rs.getString(1), rs.getInt(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getString(6), rsTipo.getString(1)});
+                    Object mascota;
+                    if (rs.getBoolean(8)) {
+                        mascota = "Si";
+                    }
+                    else {
+                        mascota = "No";
+                    }
+
+                    modelo.setValueAt(mascota, rowCount, 7);
+                    rowCount++;
+                }
+            
+                TableViviendas.setModel(modelo);
+            }
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al obtener los datos de la tabla Vivienda", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
         setVisible(false);
+        modelo.setRowCount(0);
     }//GEN-LAST:event_btnAtrasActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         deshabilitarBtns();
         
-        // TODO
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String codigo = JOptionPane.showInputDialog(null, "Introduzca el código de la vivienda:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+            ResultSet rs = CRUDvivienda.consultar(con, codigo);
+            ResultSet rsTipo = Consultas.consultarCustom(con, "SELECT t.tipo, v.codigo FROM tipo_vivienda t INNER JOIN vivienda v ON t.id = v.tipo WHERE v.codigo = " + codigo);
+
+            if (rs == null) {
+                throw new SQLException();
+            }
+            else if (rs.next() && rs.getInt(1) == -2) {
+                throw new NullPointerException();
+            }
+            else {
+                modelo.setRowCount(0);
+                modelo.addRow(new Object[]{rs.getString(1), rs.getInt(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getString(6), rsTipo.getString(1)});
+                
+                Object mascota;
+                if (rs.getBoolean(8)) {
+                    mascota = "Si";
+                }
+                else {
+                    mascota = "No";
+                }
+
+                modelo.setValueAt(mascota, 0, 7);
+            }
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al consultar la tabla Vivienda", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El código indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
         
         habilitarBtns();
     }//GEN-LAST:event_btnConsultarActionPerformed

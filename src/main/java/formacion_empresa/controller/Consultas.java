@@ -23,4 +23,15 @@ public class Consultas {
         }
     }
 
+    public static ResultSet consultarCustom(Connection con, String sql) {
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        }
+        catch (SQLException e) {
+            return null;
+        }
+    }
+
 }
