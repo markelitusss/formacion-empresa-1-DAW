@@ -146,6 +146,11 @@ public class MenuPropietarios extends javax.swing.JPanel {
         jFrameModificar.setTitle("Modificación");
         jFrameModificar.setAlwaysOnTop(true);
         jFrameModificar.setPreferredSize(new java.awt.Dimension(400, 400));
+        jFrameModificar.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                windowClose(evt);
+            }
+        });
 
         jLabel6.setText("ID:");
 
@@ -387,6 +392,10 @@ public class MenuPropietarios extends javax.swing.JPanel {
     private void btnAceptar_modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptar_modActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAceptar_modActionPerformed
+
+    private void windowClose(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_windowClose
+        // TODO add your handling code here:
+    }//GEN-LAST:event_windowClose
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

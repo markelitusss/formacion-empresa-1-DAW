@@ -9,7 +9,10 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import formacion_empresa.controller.*;
+import formacion_empresa.controller.Conexion;
+import formacion_empresa.controller.Consultas;
+import formacion_empresa.controller.CRUDinquilino;
+import formacion_empresa.model.Inquilino;
 
 /**
  *
@@ -446,19 +449,19 @@ public class MenuInquilinos extends javax.swing.JPanel {
         try {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             String id = JOptionPane.showInputDialog(null, "Introduzca el ID del inquilino:", "Consultar", JOptionPane.PLAIN_MESSAGE);
-            ResultSet rs = CRUDinquilino.consultar(con, Integer.parseInt(id));
+            Inquilino i = CRUDinquilino.consultar(con, Integer.parseInt(id));
 
-            if (rs == null) {
+            if (i == null) {
                 throw new SQLException();
             }
-            else if (rs.next() && rs.getInt(1) == -2) {
+            else if (i.getId() == -2) {
                 throw new NullPointerException();
             }
             else {
                 modelo.setRowCount(0);
-                modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+                modelo.addRow(new Object[]{i.getId(), i.getDNI(), i.getNombre(), i.getEmail(), i.getTelefono()});
                 Object mascota;
-                if (rs.getBoolean(6)) {
+                if (i.getMascota()) {
                     mascota = "Si";
                 }
                 else {

@@ -9,7 +9,10 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import formacion_empresa.controller.*;
+import formacion_empresa.controller.Conexion;
+import formacion_empresa.controller.Consultas;
+import formacion_empresa.controller.CRUDcontrato;
+import formacion_empresa.model.Contrato;
 
 /**
  *
@@ -58,6 +61,8 @@ public class MenuContratos extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
         btnAceptar = new javax.swing.JButton();
         txtIDinquilino = new javax.swing.JTextField();
         txtCodigoVivienda = new javax.swing.JTextField();
@@ -99,43 +104,52 @@ public class MenuContratos extends javax.swing.JPanel {
             }
         });
 
+        jLabel8.setText("ID:");
+
         javax.swing.GroupLayout jFrameLayout = new javax.swing.GroupLayout(jFrame.getContentPane());
         jFrame.getContentPane().setLayout(jFrameLayout);
         jFrameLayout.setHorizontalGroup(
             jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jFrameLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel2)
-                .addGap(56, 56, 56)
-                .addComponent(txtIDinquilino, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jFrameLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel3)
-                .addGap(29, 29, 29)
-                .addComponent(txtCodigoVivienda, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jFrameLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel4)
-                .addGap(21, 21, 21)
-                .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jFrameLayout.createSequentialGroup()
-                .addGap(160, 160, 160)
-                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jFrameLayout.createSequentialGroup()
-                .addGap(160, 160, 160)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jFrameLayout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jFrameLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
                 .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6)
                     .addGroup(jFrameLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(36, 36, 36)
-                        .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel3)
+                        .addGap(29, 29, 29)
+                        .addComponent(txtCodigoVivienda, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrameLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel4)
+                        .addGap(21, 21, 21)
+                        .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrameLayout.createSequentialGroup()
+                        .addGap(160, 160, 160)
+                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrameLayout.createSequentialGroup()
+                        .addGap(160, 160, 160)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrameLayout.createSequentialGroup()
+                        .addGap(150, 150, 150)
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrameLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6)
+                            .addGroup(jFrameLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(36, 36, 36)
+                                .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jFrameLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel2)
+                        .addGap(56, 56, 56)
+                        .addComponent(txtIDinquilino, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel8)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         jFrameLayout.setVerticalGroup(
             jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -143,7 +157,10 @@ public class MenuContratos extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(txtIDinquilino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtIDinquilino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8)
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15)
                 .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -190,17 +207,25 @@ public class MenuContratos extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID inquilino", "Codigo vivienda", "Fecha inicio", "Fecha fin", "Precio", "Estado"
+                "ID", "ID inquilino", "Codigo vivienda", "Fecha inicio", "Fecha fin", "Precio", "Estado"
             }
+            
         ) {
             @SuppressWarnings("rawtypes")
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
             };
 
             @SuppressWarnings("rawtypes")
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(TableContratos);
@@ -284,14 +309,14 @@ public class MenuContratos extends javax.swing.JPanel {
         try {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             ResultSet rs = Consultas.consultarTodo(con, "contrata");
-            ResultSet rsEstado = Consultas.consultarCustom(con, "SELECT t.estado, c.codigo_vivienda FROM tipo_estado t INNER JOIN contrata c ON t.id = c.estado ORDER BY c.codigo_vivienda");
+            ResultSet rsEstado = Consultas.consultarCustom(con, "SELECT t.estado, c.id FROM tipo_estado t INNER JOIN contrata c ON t.id = c.estado ORDER BY c.id");
 
             if (rs == null || rsEstado == null) {
                 throw new SQLException();
             }
             else {
                 while (rs.next() && rsEstado.next()) {
-                    modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getDouble(5), rsEstado.getString(1)});
+                    modelo.addRow(new Object[]{rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDouble(6), rsEstado.getString(1)});
                 }
 
                 TableContratos.setModel(modelo);
@@ -310,8 +335,32 @@ public class MenuContratos extends javax.swing.JPanel {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         deshabilitarBtns();
         
-        // TODO
-        
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String id = JOptionPane.showInputDialog(null, "Introduzca el ID del contrato:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+            Contrato c = CRUDcontrato.consultar(con, Integer.parseInt(id));
+
+            if (c == null) {
+                throw new SQLException();
+            }
+            else if (c.getId() == -2) {
+                throw new NullPointerException();
+            }
+            else {
+                modelo.setRowCount(0);
+                modelo.addRow(new Object[]{c.getId(), c.getId_inquilino(), c.getCodigo_vivienda(), c.getFecha_inicio(), c.getFecha_fin(), c.getPrecio(), c.getEstado()});
+            }
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al consultar la tabla Inquilino", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         habilitarBtns();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -362,11 +411,13 @@ public class MenuContratos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txtCodigoVivienda;
     private javax.swing.JTextField txtFechaFin;
     private javax.swing.JTextField txtFechaInicio;
     private javax.swing.JTextField txtIDinquilino;
+    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
 }

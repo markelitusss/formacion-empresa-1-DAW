@@ -123,6 +123,9 @@
           <Dimension value="[400, 400]"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="windowClose"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">

@@ -423,7 +423,7 @@ DELIMITER ;
 -- Operaciones CRUD contrato
 DELIMITER //
 DROP PROCEDURE sp_get_contrato //
-CREATE PROCEDURE sp_get_contrato(IN p_id_inquilino INT, IN p_codigo_vivienda VARCHAR(50), OUT p_err INT)
+CREATE PROCEDURE sp_get_contrato(IN p_id INT, OUT p_err INT)
 sp: BEGIN
     -- el procedimiento utiliza una sentencia SELECT 
     -- simple para obtener todos los datos de un contrato
@@ -435,12 +435,12 @@ sp: BEGIN
     END;
 
     -- en caso de que no exista el id solicitado
-    IF id_inquilino NOT IN (SELECT id_inquilino FROM contrata) OR codigo_vivienda NOT IN (SELECT codigo_vivienda FROM contrata) THEN
+    IF p_id NOT IN (SELECT id FROM contrata) THEN
         SET p_err = -2;
         LEAVE sp;
     END IF;
 
-    SELECT * FROM contrata WHERE id_inquilino = p_id_inquilino AND codigo_vivienda = p_codigo_vivienda;
+    SELECT * FROM contrata WHERE id = p_id;
     SET p_err = 0;
 END //
 DELIMITER ;
@@ -472,7 +472,7 @@ sp: BEGIN
         LEAVE sp;
     END IF;
 
-    SET @declaracion = 'INSERT INTO contrata VALUES (?, ?, ?, ?, ?, ?)';
+    SET @declaracion = 'INSERT INTO contrata VALUES (NULL, ?, ?, ?, ?, ?, ?)';
     PREPARE prepared_stmt FROM @declaracion;
 
     SET @id_inquilino = p_id_inquilino;
@@ -492,10 +492,9 @@ DELIMITER ;
 DELIMITER //
 DROP PROCEDURE sp_upd_contrato //
 CREATE PROCEDURE sp_upd_contrato(
+    IN p_id INT,
     IN p_id_inquilino INT,
     IN p_codigo_vivienda VARCHAR(50),
-    IN p_new_id_inquilino INT,
-    IN p_new_codigo_vivienda VARCHAR(50),
     IN p_fecha_inicio DATE,
     IN p_fecha_fin DATE,
     IN p_precio DECIMAL(7, 2),
@@ -514,30 +513,29 @@ sp: BEGIN
     END;
 
     -- en caso de que no exista el id solicitado
-    IF p_id_inquilino NOT IN (SELECT id_inquilino FROM contrata) OR p_codigo_vivienda NOT IN (SELECT codigo_vivienda FROM contrata) THEN
+    IF p_id NOT IN (SELECT id FROM contrata) THEN
         SET p_err = 2;
         LEAVE sp;
     END IF;
 
     -- en caso de que el inquilino o la viivenda nuevas no existan
-    IF p_new_id_inquilino NOT IN (SELECT id FROM inquilino) OR p_new_codigo_vivienda NOT IN (SELECT codigo FROM vivienda) THEN
+    IF p_id_inquilino NOT IN (SELECT id FROM inquilino) OR p_codigo_vivienda NOT IN (SELECT codigo FROM vivienda) THEN
         SET p_err = -3;
         LEAVE sp;
     END IF;
 
-    SET @declaracion = 'UPDATE contrata SET id_inquilino = ?, codigo_vivienda = ?, fecha_inicio = ?, fecha_fin = ?, precio = ?, estado = ? WHERE id_inquilino = p_id_inquilino AND codigo_vivienda = p_codigo_vivienda';
+    SET @declaracion = 'UPDATE contrata SET id_inquilino = ?, codigo_vivienda = ?, fecha_inicio = ?, fecha_fin = ?, precio = ?, estado = ? WHERE id = ?';
     PREPARE prepared_stmt FROM @declaracion;
 
+    SET @id = p_id;
     SET @id_inquilino = p_id_inquilino;
     SET @codigo_vivienda = p_codigo_vivienda;
-    SET @new_id_inquilino = p_new_id_inquilino;
-    SET @new_codigo_vivienda = p_new_codigo_vivienda;
     SET @fecha_inicio = p_fecha_inicio;
     SET @fecha_fin = p_fecha_fin;
     SET @precio = p_precio;
     SET @estado = (SELECT id FROM tipo_estado WHERE estado = p_estado);
 
-    EXECUTE prepared_stmt USING @new_id_inquilino, @new_codigo_vivienda, @fecha_inicio, @fecha_fin, @precio, @estado, @id_inquilino, @codigo_vivienda;
+    EXECUTE prepared_stmt USING @id_inquilino, @codigo_vivienda, @fecha_inicio, @fecha_fin, @precio, @estado, @id;
 
     DEALLOCATE PREPARE prepared_stmt;
     SET p_err = 0;
@@ -546,7 +544,7 @@ DELIMITER ;
 
 DELIMITER //
 DROP PROCEDURE sp_del_contrato //
-CREATE PROCEDURE sp_del_contrato(IN p_id_inquilino INT, IN p_codigo_vivienda VARCHAR(50), OUT p_err INT)
+CREATE PROCEDURE sp_del_contrato(IN p_id INT, OUT p_err INT)
 sp: BEGIN
     -- el procedimiento elimina de la tabla contrato el registro con el ID de inquilino y el codigo de vivienda indicados
 
@@ -557,12 +555,12 @@ sp: BEGIN
     END;
 
     -- en caso de que no exista el id solicitado
-    IF p_id_inquilino NOT IN (SELECT id_inquilino FROM contrata) OR p_codigo_vivienda NOT IN (SELECT codigo_vivienda FROM contrata) THEN
+    IF p_id NOT IN (SELECT id FROM contrata) THEN
         SET p_err = -2;
         LEAVE sp;
     END IF;
 
-    DELETE FROM contrata WHERE id_inquilino = p_id_inquilino AND codigo_vivienda = p_codigo_vivienda;
+    DELETE FROM contrata WHERE id = p_id;
     SET p_err = 0;
 END //
 DELIMITER ;

@@ -4,12 +4,18 @@
  */
 package formacion_empresa.view;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.nio.channels.ClosedByInterruptException;
 import java.sql.*;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import formacion_empresa.controller.*;
+import formacion_empresa.controller.Conexion;
+import formacion_empresa.controller.Consultas;
+import formacion_empresa.controller.CRUDpropietario;
+import formacion_empresa.model.Propietario;
 
 /**
  *
@@ -26,6 +32,20 @@ public class MenuPropietarios extends javax.swing.JPanel {
         initComponents();
         modelo = (DefaultTableModel) TablePropietarios.getModel();
         setVisible(false);
+
+        jFrameInsertar.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                habilitarBtns();
+            }
+        });
+
+        jFrameModificar.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                habilitarBtns();
+            }
+        });
     }
     
     public void deshabilitarBtns() {
@@ -385,17 +405,22 @@ public class MenuPropietarios extends javax.swing.JPanel {
         try {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             String id = JOptionPane.showInputDialog(null, "Introduzca el ID del propietario:", "Consultar", JOptionPane.PLAIN_MESSAGE);
-            ResultSet rs = CRUDpropietario.consultar(con, Integer.parseInt(id));
 
-            if (rs == null) {
+            if (id == null) {
+                throw new ClosedByInterruptException();
+            }
+
+            Propietario p = CRUDpropietario.consultar(con, Integer.parseInt(id));
+
+            if (p == null) {
                 throw new SQLException();
             }
-            else if (rs.next() && rs.getInt(1) == -2) {
+            else if (p.getId() == -2) {
                 throw new NullPointerException();
             }
             else {
                 modelo.setRowCount(0);
-                modelo.addRow(new Object[]{rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5)});
+                modelo.addRow(new Object[]{p.getId(), p.getDNI(), p.getNombre(), p.getEmail(), p.getTelefono()});
             }
         }
         catch (NumberFormatException e) {
@@ -407,6 +432,7 @@ public class MenuPropietarios extends javax.swing.JPanel {
         catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        catch (ClosedByInterruptException e) {}
         
         habilitarBtns();
     }//GEN-LAST:event_btnConsultarActionPerformed
@@ -417,6 +443,7 @@ public class MenuPropietarios extends javax.swing.JPanel {
         jFrameInsertar.pack();
         jFrameInsertar.setLocationRelativeTo(null);
         jFrameInsertar.setVisible(true);
+
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -425,22 +452,118 @@ public class MenuPropietarios extends javax.swing.JPanel {
         jFrameModificar.pack();
         jFrameModificar.setLocationRelativeTo(null);
         jFrameModificar.setVisible(true);
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         deshabilitarBtns();
         
-        // TODO
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String idStr = JOptionPane.showInputDialog(null, "Introduzca el ID del propietario:", "Eliminar", JOptionPane.PLAIN_MESSAGE);
+            if (idStr == null) {
+                throw new ClosedByInterruptException();
+            }
+
+            int id = Integer.parseInt(idStr);
+            int err;
+
+            if (JOptionPane.showConfirmDialog(null, "¿Seguro que quiere eliminar el registro con ID " + id + "?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0) {
+                err = CRUDpropietario.eliminar(con, id);
+                if (err == -1) {
+                    throw new SQLException();
+                }
+                else if (err == -2) {
+                    throw new NullPointerException();
+                }
+            }
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al eliminar de la tabla Propietario. No se ha realizado ningún cambio", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (ClosedByInterruptException e) {}
         
         habilitarBtns();
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAceptar_insActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptar_insActionPerformed
-        // TODO add your handling code here:
+        try {
+            String DNI = txtDNI_ins.getText();
+            String nombre = txtNombre_ins.getText();
+            String email = txtEmail_ins.getText();
+            String telefono = txtTelefono_ins.getText();
+
+            if (DNI.isBlank() || nombre.isBlank()) {
+                throw new NullPointerException();    
+            }
+
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            int id_ins = CRUDpropietario.insertar(con, new Propietario(0, DNI, nombre, email, telefono));
+
+            JOptionPane.showMessageDialog(null, "Propietario insertado con ID: " + id_ins, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "Debes introducir al menos DNI y nombre", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        jFrameInsertar.setVisible(false);
+        habilitarBtns();
+
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnAceptar_insActionPerformed
 
     private void btnAceptar_modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptar_modActionPerformed
-        // TODO add your handling code here:
+        try {
+            int id = Integer.parseInt(txtID_mod.getText());
+            String DNI = txtDNI_mod.getText();
+            String nombre = txtNombre_mod.getText();
+            String email = txtEmail_mod.getText();
+            String telefono = txtTelefono_mod.getText();
+
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            Propietario oldP = CRUDpropietario.consultar(con, id);
+            Propietario newP = new Propietario(id, DNI, nombre, email, telefono);
+
+            if (newP.getDNI().isBlank()) {
+                newP.setDNI(oldP.getDNI());
+            }
+            if (newP.getNombre().isBlank()) {
+                newP.setNombre(oldP.getNombre());
+            }
+            if (newP.getEmail().isBlank()) {
+                newP.setEmail(oldP.getEmail());
+            }
+            if (newP.getTelefono().isBlank()) {
+                newP.setTelefono(oldP.getTelefono());
+            }
+
+            int err = CRUDpropietario.actualizar(con, newP);
+
+            if (err == -1) throw new SQLException();
+            else JOptionPane.showMessageDialog(null, "Los datos han sido modificados correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El ID introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al actualizar los datos de la tabla Propietario", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        jFrameModificar.setVisible(false);
+        habilitarBtns();
+
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnAceptar_modActionPerformed
 
 

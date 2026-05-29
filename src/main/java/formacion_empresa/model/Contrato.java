@@ -9,6 +9,7 @@ package formacion_empresa.model;
 public class Contrato {
     
     // Definición de atributos
+    private int id;
     private int id_inquilino;
     private String codigo_vivienda;
     private String fecha_inicio;
@@ -17,7 +18,8 @@ public class Contrato {
     private String estado;
 
     // Constructor
-    public Contrato(int id_inquilino, String codigo_vivienda, String fecha_inicio, String fecha_fin, double precio, String estado) {
+    public Contrato(int id, int id_inquilino, String codigo_vivienda, String fecha_inicio, String fecha_fin, double precio, String estado) {
+        this.id = id;
         this.id_inquilino = id_inquilino;
         this.codigo_vivienda = codigo_vivienda;
         this.fecha_inicio = fecha_inicio;
@@ -27,6 +29,14 @@ public class Contrato {
     }
     
     // Getters y setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId_inquilino() {
         return id_inquilino;
     }

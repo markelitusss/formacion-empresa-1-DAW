@@ -8,14 +8,13 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
-            "mainClass": "formacion_empresa.view.Main",
+            "mainClass": "formacion_empresa.Main",
             "projectName": "formacion_empresa",
             "env": {
                 "DB_URL": "jdbc:mysql://172.18.231.195/alquiler_viviendas",
                 "DB_USER": "usuario",
-                "DB_PASSWORD": "user1234",
+                "DB_PASSWORD": "user1234"
             }
         }
-        
     ]
 }

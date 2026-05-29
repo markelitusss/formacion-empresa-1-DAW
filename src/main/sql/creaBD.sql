@@ -56,13 +56,13 @@ CREATE TABLE tipo_estado (
 
 -- Tabla contrata
 CREATE TABLE contrata (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     id_inquilino INT,
     codigo_vivienda VARCHAR(50),
     fecha_inicio DATE,
     fecha_fin DATE,
     precio DECIMAL(7, 2),
     estado INT,
-    CONSTRAINT PRIMARY KEY(id_inquilino, codigo_vivienda),
     CONSTRAINT fk_contrata_estado FOREIGN KEY(estado) REFERENCES tipo_estado(id),
     CONSTRAINT fk_contrata_inquilino FOREIGN KEY(id_inquilino) REFERENCES inquilino(id),
     CONSTRAINT fk_contrata_vivienda FOREIGN KEY(codigo_vivienda) REFERENCES vivienda(codigo)

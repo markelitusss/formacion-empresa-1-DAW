@@ -8,9 +8,11 @@ package formacion_empresa.controller;
 
 import java.sql.*;
 
+import formacion_empresa.model.Inquilino;
+
 public class CRUDinquilino {
     
-    public static ResultSet consultar(Connection con, int id) {
+    public static Inquilino consultar(Connection con, int id) {
         try {
             String sql = "CALL sp_get_inquilino(?, ?)";
             CallableStatement cs = con.prepareCall(sql);
@@ -19,26 +21,19 @@ public class CRUDinquilino {
 
             cs.execute();
             ResultSet rs = cs.getResultSet();
+            rs.next();
+            Inquilino i = new Inquilino(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getBoolean(6));
+
             int err = cs.getInt(2);
 
             if (err == -1) {
                 throw new SQLException();
             }
             else if (err == -2) {
-                while (rs.next()) {
-                    rs.deleteRow();
-                }
-                
-                rs.moveToInsertRow();
-                rs.updateInt(1, err);
-                rs.insertRow();
-                
-                return rs;
+                i.setId(-2);
             }
-            else {
-                return rs;
-            }
-            
+
+            return i;
         }
         catch (SQLException e) {
             return null;

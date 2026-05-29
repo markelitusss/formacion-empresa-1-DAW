@@ -2,10 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package formacion_empresa.view;
+package formacion_empresa;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
+import formacion_empresa.view.*;
 
 /**
  *

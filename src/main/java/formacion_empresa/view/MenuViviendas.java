@@ -9,7 +9,10 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import formacion_empresa.controller.*;
+import formacion_empresa.controller.Conexion;
+import formacion_empresa.controller.Consultas;
+import formacion_empresa.controller.CRUDvivienda;
+import formacion_empresa.model.Vivienda;
 
 /**
  *
@@ -370,21 +373,20 @@ public class MenuViviendas extends javax.swing.JPanel {
         try {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             String codigo = JOptionPane.showInputDialog(null, "Introduzca el código de la vivienda:", "Consultar", JOptionPane.PLAIN_MESSAGE);
-            ResultSet rs = CRUDvivienda.consultar(con, codigo);
-            ResultSet rsTipo = Consultas.consultarCustom(con, "SELECT t.tipo, v.codigo FROM tipo_vivienda t INNER JOIN vivienda v ON t.id = v.tipo WHERE v.codigo = " + codigo);
+            Vivienda v = CRUDvivienda.consultar(con, codigo);
 
-            if (rs == null) {
+            if (v == null) {
                 throw new SQLException();
             }
-            else if (rs.next() && rs.getInt(1) == -2) {
+            else if (v.getId_propietario() == -2) {
                 throw new NullPointerException();
             }
             else {
                 modelo.setRowCount(0);
-                modelo.addRow(new Object[]{rs.getString(1), rs.getInt(2), rs.getString(3), rs.getDouble(4), rs.getInt(5), rs.getString(6), rsTipo.getString(1)});
+                modelo.addRow(new Object[]{v.getCodigo(), v.getId_propietario(), v.getDireccion(), v.getPrecio(), v.getSuperficie(), v.getDescripcion(), v.getTipo()});
                 
                 Object mascota;
-                if (rs.getBoolean(8)) {
+                if (v.isAcepta_mascota()) {
                     mascota = "Si";
                 }
                 else {
