@@ -508,10 +508,17 @@ public class MenuPropietarios extends javax.swing.JPanel {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             int id_ins = CRUDpropietario.insertar(con, new Propietario(0, DNI, nombre, email, telefono));
 
+            if (id_ins == -1) {
+                throw new SQLException();
+            }
+
             JOptionPane.showMessageDialog(null, "Propietario insertado con ID: " + id_ins, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         }
         catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "Debes introducir al menos DNI y nombre", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar insertar en la tabla Propietario", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         jFrameInsertar.setVisible(false);
@@ -549,6 +556,7 @@ public class MenuPropietarios extends javax.swing.JPanel {
             int err = CRUDpropietario.actualizar(con, newP);
 
             if (err == -1) throw new SQLException();
+            else if (err == -2) throw new NullPointerException();
             else JOptionPane.showMessageDialog(null, "Los datos han sido modificados correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 
         }
@@ -557,6 +565,9 @@ public class MenuPropietarios extends javax.swing.JPanel {
         }
         catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Ha ocurrido un error al actualizar los datos de la tabla Propietario", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         jFrameModificar.setVisible(false);

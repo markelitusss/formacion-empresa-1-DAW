@@ -4,6 +4,9 @@
  */
 package formacion_empresa.view;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.nio.channels.ClosedByInterruptException;
 import java.sql.*;
 
 import javax.swing.JOptionPane;
@@ -21,6 +24,7 @@ import formacion_empresa.model.Contrato;
 public class MenuContratos extends javax.swing.JPanel {
 
     DefaultTableModel modelo;
+    int aceptar;
     
     public void deshabilitarBtns() {
         btnConsultar.setEnabled(false);
@@ -43,6 +47,13 @@ public class MenuContratos extends javax.swing.JPanel {
         initComponents();
         modelo = (DefaultTableModel) TableContratos.getModel();
         setVisible(false);
+
+        jFrame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                habilitarBtns();
+            }
+        });
     }
 
     /**
@@ -60,7 +71,6 @@ public class MenuContratos extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         btnAceptar = new javax.swing.JButton();
@@ -69,7 +79,6 @@ public class MenuContratos extends javax.swing.JPanel {
         txtPrecio = new javax.swing.JTextField();
         txtFechaInicio = new javax.swing.JTextField();
         txtFechaFin = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         btnAtras = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -94,8 +103,6 @@ public class MenuContratos extends javax.swing.JPanel {
         jLabel5.setText("Fecha fin (YYYY-MM-DD):");
 
         jLabel6.setText("Precio:");
-
-        jLabel7.setText("Estado:");
 
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -126,15 +133,8 @@ public class MenuContratos extends javax.swing.JPanel {
                         .addGap(160, 160, 160)
                         .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jFrameLayout.createSequentialGroup()
-                        .addGap(160, 160, 160)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jFrameLayout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jFrameLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
                             .addComponent(jLabel6)
                             .addGroup(jFrameLayout.createSequentialGroup()
                                 .addComponent(jLabel5)
@@ -148,7 +148,10 @@ public class MenuContratos extends javax.swing.JPanel {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrameLayout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jFrameLayout.setVerticalGroup(
@@ -177,11 +180,7 @@ public class MenuContratos extends javax.swing.JPanel {
                 .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(45, 45, 45)
                 .addComponent(btnAceptar)
                 .addContainerGap())
         );
@@ -338,6 +337,11 @@ public class MenuContratos extends javax.swing.JPanel {
         try {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             String id = JOptionPane.showInputDialog(null, "Introduzca el ID del contrato:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+
+            if (id == null) {
+                throw new ClosedByInterruptException();
+            }
+
             Contrato c = CRUDcontrato.consultar(con, Integer.parseInt(id));
 
             if (c == null) {
@@ -360,6 +364,7 @@ public class MenuContratos extends javax.swing.JPanel {
         catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        catch (ClosedByInterruptException e) {}
 
         habilitarBtns();
     }//GEN-LAST:event_btnConsultarActionPerformed
@@ -370,6 +375,8 @@ public class MenuContratos extends javax.swing.JPanel {
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
+
+        aceptar = 1;
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -378,18 +385,130 @@ public class MenuContratos extends javax.swing.JPanel {
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
+
+        aceptar = 2;
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         deshabilitarBtns();
         
-        // TODO
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String idStr = JOptionPane.showInputDialog(null, "Introduzca el ID del contrato:", "Eliminar", JOptionPane.PLAIN_MESSAGE);
+            if (idStr == null) {
+                throw new ClosedByInterruptException();
+            }
+
+            int id = Integer.parseInt(idStr);
+            int err;
+
+            if (JOptionPane.showConfirmDialog(null, "¿Seguro que quiere eliminar el registro con ID " + id + "?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0) {
+                err = CRUDcontrato.eliminar(con, id);
+                if (err == -1) {
+                    throw new SQLException();
+                }
+                else if (err == -2) {
+                    throw new NullPointerException();
+                }
+            }
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al eliminar de la tabla Contrato. No se ha realizado ningún cambio", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (ClosedByInterruptException e) {}
         
         habilitarBtns();
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
+        if (aceptar == 1) {
+            try {
+                int id_inquilino = Integer.parseInt(txtIDinquilino.getText());
+                String codigo_vivienda = txtCodigoVivienda.getText();
+                String fecha_inicio = txtFechaInicio.getText();
+                String fecha_fin = txtFechaFin.getText();
+                double precio = Double.parseDouble(txtPrecio.getText());
+
+                Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+                int id_ins = CRUDcontrato.insertar(con, new Contrato(0, id_inquilino, codigo_vivienda, fecha_inicio, fecha_fin, precio, "Pendiente"));
+
+                if (id_ins == -1) {
+                    throw new SQLException();
+                }
+                else if (id_ins == -3) {
+                    throw new IndexOutOfBoundsException();
+                }
+
+                JOptionPane.showMessageDialog(null, "Contrato insertado con ID: " + id_ins, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (IndexOutOfBoundsException e) {
+                JOptionPane.showMessageDialog(null, "El ID del inquilino o el código de la vivienda no existen", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar insertar en la tabla Contrata", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
+        else {
+            try {
+                int id = Integer.parseInt(txtId.getText());
+                int id_inquilino = Integer.parseInt(txtIDinquilino.getText());
+                String codigo_vivienda = txtCodigoVivienda.getText();
+                String fecha_inicio = txtFechaInicio.getText();
+                String fecha_fin = txtFechaFin.getText();
+                double precio = Double.parseDouble(txtPrecio.getText());
+
+                Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+                Contrato oldC = CRUDcontrato.consultar(con, id);
+                Contrato newC = new Contrato(id, id_inquilino, codigo_vivienda, fecha_inicio, fecha_fin, precio, oldC.getEstado());
+
+                if (txtIDinquilino.getText().isBlank()) {
+                    newC.setId_inquilino(oldC.getId_inquilino());
+                }
+                if (codigo_vivienda.isBlank()) {
+                    newC.setCodigo_vivienda(oldC.getCodigo_vivienda());
+                }
+                if (fecha_inicio.isBlank()) {
+                    newC.setFecha_inicio(oldC.getFecha_inicio());
+                }
+                if (fecha_fin.isBlank()) {
+                    newC.setFecha_fin(oldC.getFecha_fin());
+                }
+                if (txtPrecio.getText().isBlank()) {
+                    newC.setPrecio(oldC.getPrecio());
+                }
+
+                int err = CRUDcontrato.actualizar(con, newC);
+
+                if (err == -1) throw new SQLException();
+                else if (err == -2) throw new NullPointerException();
+                else if (err == -3) throw new IndexOutOfBoundsException();
+                else JOptionPane.showMessageDialog(null, "Los datos han sido modificados correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "El ID especificado no existe", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar actualizar en la tabla Contrata", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (IndexOutOfBoundsException e) {
+                JOptionPane.showMessageDialog(null, "El ID del propietario o el código de la vivienda no existen", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        jFrame.setVisible(false);
+        habilitarBtns();
+
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnAceptarActionPerformed
 
 
@@ -402,7 +521,6 @@ public class MenuContratos extends javax.swing.JPanel {
     private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JFrame jFrame;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -410,7 +528,6 @@ public class MenuContratos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txtCodigoVivienda;

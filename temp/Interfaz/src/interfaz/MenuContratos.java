@@ -46,14 +46,12 @@ public class MenuContratos extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
         txtIDinquilino = new javax.swing.JTextField();
         txtCodigoVivienda = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
         txtFechaInicio = new javax.swing.JTextField();
         txtFechaFin = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -80,8 +78,6 @@ public class MenuContratos extends javax.swing.JPanel {
         jLabel5.setText("Fecha fin (YYYY-MM-DD):");
 
         jLabel6.setText("Precio:");
-
-        jLabel7.setText("Estado:");
 
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -112,15 +108,8 @@ public class MenuContratos extends javax.swing.JPanel {
                         .addGap(160, 160, 160)
                         .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jFrameLayout.createSequentialGroup()
-                        .addGap(160, 160, 160)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jFrameLayout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jFrameLayout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
                             .addComponent(jLabel6)
                             .addGroup(jFrameLayout.createSequentialGroup()
                                 .addComponent(jLabel5)
@@ -134,7 +123,10 @@ public class MenuContratos extends javax.swing.JPanel {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel8)
                         .addGap(18, 18, 18)
-                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jFrameLayout.createSequentialGroup()
+                        .addGap(149, 149, 149)
+                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jFrameLayout.setVerticalGroup(
@@ -163,11 +155,7 @@ public class MenuContratos extends javax.swing.JPanel {
                 .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(45, 45, 45)
                 .addComponent(btnAceptar)
                 .addContainerGap())
         );
@@ -332,7 +320,6 @@ public class MenuContratos extends javax.swing.JPanel {
     private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JFrame jFrame;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -340,7 +327,6 @@ public class MenuContratos extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txtCodigoVivienda;

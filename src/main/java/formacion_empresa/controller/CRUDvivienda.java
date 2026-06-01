@@ -40,7 +40,108 @@ public class CRUDvivienda {
         }
         catch (SQLException e) {
             return null;
-        } 
+        }
+    }
+
+    public static int insertar(Connection con, Vivienda v) {
+        try {
+            String sql = "CALL sp_ins_vivienda(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            CallableStatement cs = con.prepareCall(sql);
+
+            cs.setString(1, v.getCodigo());
+            cs.setInt(2, v.getId_propietario());
+            cs.setString(3, v.getDireccion());
+            cs.setDouble(4, v.getPrecio());
+            cs.setInt(5, v.getSuperficie());
+            cs.setString(6, v.getDescripcion());
+            cs.setString(7, v.getTipo());
+            cs.setBoolean(8, v.isAcepta_mascota());
+
+            cs.execute();
+            int err = cs.getInt(9);
+
+            if (err == -1) {
+                throw new SQLException();
+            }
+            else if (err == -3) {
+                throw new IndexOutOfBoundsException();
+            }
+
+            return 0;
+        }
+        catch (SQLException e) {
+            return -1;
+        }
+        catch (IndexOutOfBoundsException e) {
+            return -3;
+        }
+    }
+
+    public static int actualizar(Connection con, Vivienda v) {
+        try {
+            String sql = "CALL sp_upd_vivienda(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            CallableStatement cs = con.prepareCall(sql);
+
+            cs.setString(1, v.getCodigo());
+            cs.setInt(2, v.getId_propietario());
+            cs.setString(3, v.getDireccion());
+            cs.setDouble(4, v.getPrecio());
+            cs.setInt(5, v.getSuperficie());
+            cs.setString(6, v.getDescripcion());
+            cs.setString(7, v.getTipo());
+            cs.setBoolean(8, v.isAcepta_mascota());
+
+            cs.execute();
+            int err = cs.getInt(9);
+
+            if (err == -1) {
+                throw new SQLException();
+            }
+            else if (err == -2) {
+                throw new NullPointerException();
+            }
+            else if (err == -3) {
+                throw new IndexOutOfBoundsException();
+            }
+
+            return 0;
+        }
+        catch (SQLException e) {
+            return -1;
+        }
+        catch (NullPointerException e) {
+            return -2;
+        }
+        catch (IndexOutOfBoundsException e) {
+            return -3;
+        }
+    }
+
+    public static int eliminar(Connection con, String codigo) {
+        try {
+            String sql = "CALL sp_del_vivienda(?, ?)";
+            CallableStatement cs = con.prepareCall(sql);
+
+            cs.setString(1, codigo);
+
+            cs.execute();
+            int err = cs.getInt(2);
+
+            if (err == -1) {
+                throw new SQLException();
+            }
+            else if (err == -2) {
+                throw new NullPointerException();
+            }
+
+            return 0;
+        }
+        catch (SQLException e) {
+            return -1;
+        }
+        catch (NullPointerException e) {
+            return -2;
+        }
     }
 
 }

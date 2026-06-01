@@ -4,6 +4,9 @@
  */
 package formacion_empresa.view;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.nio.channels.ClosedByInterruptException;
 import java.sql.*;
 
 import javax.swing.JOptionPane;
@@ -43,6 +46,20 @@ public class MenuInquilinos extends javax.swing.JPanel {
         initComponents();
         modelo = (DefaultTableModel) TableInquilinos.getModel();
         setVisible(false);
+
+        jFrameInsertar.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                habilitarBtns();
+            }
+        });
+
+        jFrameModificar.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                habilitarBtns();
+            }
+        });
     }
 
     /**
@@ -96,6 +113,7 @@ public class MenuInquilinos extends javax.swing.JPanel {
 
         jFrameInsertar.setTitle("Inserción");
         jFrameInsertar.setAlwaysOnTop(true);
+        jFrameInsertar.setPreferredSize(new java.awt.Dimension(400, 400));
 
         jLabel2.setText("DNI:");
 
@@ -449,6 +467,11 @@ public class MenuInquilinos extends javax.swing.JPanel {
         try {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             String id = JOptionPane.showInputDialog(null, "Introduzca el ID del inquilino:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+
+            if (id == null) {
+                throw new ClosedByInterruptException();
+            }
+
             Inquilino i = CRUDinquilino.consultar(con, Integer.parseInt(id));
 
             if (i == null) {
@@ -480,6 +503,7 @@ public class MenuInquilinos extends javax.swing.JPanel {
         catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        catch (ClosedByInterruptException e) {}
         
         habilitarBtns();
     }//GEN-LAST:event_btnConsultarActionPerformed
@@ -503,17 +527,136 @@ public class MenuInquilinos extends javax.swing.JPanel {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         deshabilitarBtns();
         
-        // TODO
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String idStr = JOptionPane.showInputDialog(null, "Introduzca el ID del inquilino:", "Eliminar", JOptionPane.PLAIN_MESSAGE);
+            if (idStr == null) {
+                throw new ClosedByInterruptException();
+            }
+
+            int id = Integer.parseInt(idStr);
+            int err;
+
+            if (JOptionPane.showConfirmDialog(null, "¿Seguro que quiere eliminar el registro con ID " + id + "?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0) {
+                err = CRUDinquilino.eliminar(con, id);
+                if (err == -1) {
+                    throw new SQLException();
+                }
+                else if (err == -2) {
+                    throw new NullPointerException();
+                }
+            }
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al eliminar de la tabla Inquilino. No se ha realizado ningún cambio", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (ClosedByInterruptException e) {}
         
         habilitarBtns();
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAceptar_insActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptar_insActionPerformed
-        // TODO add your handling code here:
+        try {
+            String DNI = txtDNI_ins.getText();
+            String nombre = txtNombre_ins.getText();
+            String email = txtEmail_ins.getText();
+            String telefono = txtTelefono_ins.getText();
+            boolean mascota;
+            if (jRadioButton1.isSelected()) {
+                mascota = true;
+            }
+            else {
+                mascota = false;
+            }
+
+            if (DNI.isBlank() || nombre.isBlank()) {
+                throw new NullPointerException();    
+            }
+            
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            int id_ins = CRUDinquilino.insertar(con, new Inquilino(0, DNI, nombre, email, telefono, mascota));
+
+            if (id_ins == -1) {
+                throw new SQLException();
+            }
+
+            JOptionPane.showMessageDialog(null, "Inquilino insertado con ID: " + id_ins, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "Debes introducir al menos DNI y nombre", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar insertar en la tabla Inquilino", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        jFrameInsertar.setVisible(false);
+        habilitarBtns();
+
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnAceptar_insActionPerformed
 
     private void btnAceptar_modActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptar_modActionPerformed
-        // TODO add your handling code here:
+        try {
+            int id = Integer.parseInt(txtID_mod.getText());
+            String DNI = txtDNI_mod.getText();
+            String nombre = txtNombre_mod.getText();
+            String email = txtEmail_mod.getText();
+            String telefono = txtTelefono_mod.getText();
+            boolean mascota;
+            if (jRadioButton1.isSelected()) {
+                mascota = true;
+            }
+            else {
+                mascota = false;
+            }
+
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            Inquilino oldI = CRUDinquilino.consultar(con, id);
+            Inquilino newI = new Inquilino(id, DNI, nombre, email, telefono, mascota);
+
+            if (newI.getDNI().isBlank()) {
+                newI.setDNI(oldI.getDNI());
+            }
+            if (newI.getNombre().isBlank()) {
+                newI.setNombre(oldI.getNombre());
+            }
+            if (newI.getEmail().isBlank()) {
+                newI.setEmail(oldI.getEmail());
+            }
+            if (newI.getTelefono().isBlank()) {
+                newI.setTelefono(oldI.getTelefono());
+            }
+
+            int err = CRUDinquilino.actualizar(con, newI);
+
+            if (err == -1) throw new SQLException();
+            else if (err == -2) throw new NullPointerException();
+            else JOptionPane.showMessageDialog(null, "Los datos han sido modificados correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El ID introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al actualizar los datos de la tabla Inquilino", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        jFrameModificar.setVisible(false);
+        habilitarBtns();
+
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnAceptar_modActionPerformed
 
 

@@ -82,11 +82,17 @@ public class CRUDpropietario {
             if (err == -1) {
                 throw new SQLException();
             }
+            else if (err == -2) {
+                throw new NullPointerException();
+            }
 
             return 0;
         }
         catch (SQLException e) {
             return -1;
+        }
+        catch (NullPointerException e) {
+            return -2;
         }
     }
 

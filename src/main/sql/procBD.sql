@@ -267,7 +267,7 @@ DELIMITER ;
 
 DELIMITER //
 DROP PROCEDURE sp_del_vivienda //
-CREATE PROCEDURE sp_del_vivienda(IN p_id INT, OUT p_err INT)
+CREATE PROCEDURE sp_del_vivienda(IN p_codigo VARCHAR(50), OUT p_err INT)
 sp: BEGIN
     -- el procedimiento elimina de la tabla propietario el registro con el ID indicado
 
@@ -454,6 +454,7 @@ CREATE PROCEDURE sp_ins_contrato(
     IN p_fecha_fin DATE,
     IN p_precio DECIMAL(7, 2),
     IN p_estado VARCHAR(50),
+    OUT p_id INT,
     OUT p_err INT
 )
 sp: BEGIN
@@ -483,6 +484,7 @@ sp: BEGIN
     SET @estado = (SELECT id FROM tipo_estado WHERE estado = p_estado);
 
     EXECUTE prepared_stmt USING @id_inquilino, @codigo_vivienda, @fecha_inicio, @fecha_fin, @precio, @estado;
+    SET p_id = LAST_INSERT_ID();
 
     DEALLOCATE PREPARE prepared_stmt;
     SET p_err = 0;

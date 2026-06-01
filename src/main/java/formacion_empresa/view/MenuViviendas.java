@@ -4,6 +4,9 @@
  */
 package formacion_empresa.view;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.nio.channels.ClosedByInterruptException;
 import java.sql.*;
 
 import javax.swing.JOptionPane;
@@ -21,6 +24,7 @@ import formacion_empresa.model.Vivienda;
 public class MenuViviendas extends javax.swing.JPanel {
 
     DefaultTableModel modelo;
+    int aceptar;
     
     public void deshabilitarBtns() {
         btnConsultar.setEnabled(false);
@@ -43,6 +47,17 @@ public class MenuViviendas extends javax.swing.JPanel {
         initComponents();
         modelo = (DefaultTableModel) TableViviendas.getModel();
         setVisible(false);
+
+        cmbTipo.addItem("Apartamento");
+        cmbTipo.addItem("Ático");
+        cmbTipo.addItem("Casa");
+
+        jFrame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentHidden(ComponentEvent e) {
+                habilitarBtns();
+            }
+        });
     }
 
     /**
@@ -373,6 +388,11 @@ public class MenuViviendas extends javax.swing.JPanel {
         try {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             String codigo = JOptionPane.showInputDialog(null, "Introduzca el código de la vivienda:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+
+            if (codigo == null) {
+                throw new ClosedByInterruptException();
+            }
+
             Vivienda v = CRUDvivienda.consultar(con, codigo);
 
             if (v == null) {
@@ -402,7 +422,8 @@ public class MenuViviendas extends javax.swing.JPanel {
         catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "El código indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
+        catch (ClosedByInterruptException e) {}
+
         habilitarBtns();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
@@ -412,6 +433,8 @@ public class MenuViviendas extends javax.swing.JPanel {
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
+
+        aceptar = 1;
     }//GEN-LAST:event_btnInsertarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -420,18 +443,168 @@ public class MenuViviendas extends javax.swing.JPanel {
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
+
+        aceptar = 2;
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         deshabilitarBtns();
         
-        // TODO
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String codigo = JOptionPane.showInputDialog(null, "Introduzca el código de la vivienda:", "Eliminar", JOptionPane.PLAIN_MESSAGE);
+            if (codigo == null) {
+                throw new ClosedByInterruptException();
+            }
+
+            int err;
+
+            if (JOptionPane.showConfirmDialog(null, "¿Seguro que quiere eliminar el registro con codigo " + codigo + "?", "Confirmación", JOptionPane.YES_NO_OPTION) == 0) {
+                err = CRUDvivienda.eliminar(con, codigo);
+                if (err == -1) {
+                    throw new SQLException();
+                }
+                else if (err == -2) {
+                    throw new NullPointerException();
+                }
+            }
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al eliminar de la tabla Vivienda. No se ha realizado ningún cambio", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "El código indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (ClosedByInterruptException e) {}
         
         habilitarBtns();
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
+        if (aceptar == 1) {
+            try {
+                String codigo = txtCodigo.getText();
+                int id_propietario = Integer.parseInt(txtIDpropietario.getText());
+                String direccion = txtDireccion.getText();
+                double precio = Double.parseDouble(txtPrecio.getText());
+                int superficie = Integer.parseInt(txtSuperficie.getText());
+                String descripcion = txtDescripcion.getText();
+                Object tipoObj = cmbTipo.getSelectedItem();
+                String tipo = String.valueOf(tipoObj);
+                boolean acepta_mascota;
+                if (jRadioButton1.isSelected()) {
+                    acepta_mascota = true;
+                }
+                else {
+                    acepta_mascota = false;
+                }
+
+                if (codigo.isBlank() || txtIDpropietario.getText().isBlank()) {
+                    throw new NullPointerException();
+                }
+
+                Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+                int err = CRUDvivienda.insertar(con, new Vivienda(codigo, id_propietario, direccion, precio, superficie, descripcion, tipo, acepta_mascota));
+
+                if (err == -1) {
+                    throw new SQLException();
+                }
+                else if (err == -3) {
+                    throw new IndexOutOfBoundsException();
+                }
+
+                JOptionPane.showMessageDialog(null, "Vivienda insertada correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Debes introducir al menos un codigo y un ID de propietario", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar insertar en la tabla Vivienda", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (IndexOutOfBoundsException e) {
+                JOptionPane.showMessageDialog(null, "El ID del propietario especificado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+        else {
+            try {
+                String codigo = txtCodigo.getText();
+                String id_propietario = txtIDpropietario.getText();
+                String direccion = txtDireccion.getText();
+                String precio = txtPrecio.getText();
+                String superficie = txtSuperficie.getText();
+                String descripcion = txtDescripcion.getText();
+                Object tipoObj = cmbTipo.getSelectedItem();
+                String tipo = String.valueOf(tipoObj);
+                boolean acepta_mascota;
+                if (jRadioButton1.isSelected()) {
+                    acepta_mascota = true;
+                }
+                else {
+                    acepta_mascota = false;
+                }
+
+                Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+                Vivienda oldV = CRUDvivienda.consultar(con, codigo);
+                Vivienda newV = new Vivienda(codigo, 0, direccion, 0, 0, descripcion, tipo, acepta_mascota);
+
+                if (id_propietario.isBlank()) {
+                    newV.setId_propietario(oldV.getId_propietario());
+                }
+                else {
+                    newV.setId_propietario(Integer.parseInt(id_propietario));
+                }
+
+                if (newV.getDireccion().isBlank()) {
+                    newV.setDireccion(oldV.getDireccion());
+                }
+                if (precio.isBlank()) {
+                    newV.setPrecio(oldV.getPrecio());
+                }
+                else {
+                    newV.setPrecio(Double.parseDouble(precio));
+                }
+
+                if (superficie.isBlank()) {
+                    newV.setSuperficie(oldV.getSuperficie());
+                }
+                else {
+                    newV.setSuperficie(Integer.parseInt(superficie));
+                }
+
+                if (newV.getDescripcion().isBlank()) {
+                    newV.setDescripcion(oldV.getDescripcion());
+                }
+                if (newV.getTipo().isBlank()) {
+                    newV.setTipo(oldV.getTipo());
+                }
+
+                int err = CRUDvivienda.actualizar(con, newV);
+
+                if (err == -1) throw new SQLException();
+                else if (err == -2) throw new NullPointerException();
+                else if (err == -3) throw new IndexOutOfBoundsException();
+                else JOptionPane.showMessageDialog(null, "Los datos han sido modificados correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "El código de la vivienda no existe", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar actualizar en la tabla Vivienda", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (IndexOutOfBoundsException e) {
+                JOptionPane.showMessageDialog(null, "El ID del propietario especificado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        }
+
+        jFrame.setVisible(false);
+        habilitarBtns();
+            
+        modelo.setRowCount(0);
+        componentShown(null);
     }//GEN-LAST:event_btnAceptarActionPerformed
 
 
