@@ -85,7 +85,7 @@ public class CRUDcontrato {
             cs.setString(7, c.getEstado());
 
             cs.execute();
-            int err = cs.getInt(7);
+            int err = cs.getInt(8);
 
             if (err == -1) {
                 throw new SQLException();

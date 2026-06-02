@@ -377,6 +377,11 @@ public class MenuInquilinos extends javax.swing.JPanel {
         });
 
         btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -658,6 +663,23 @@ public class MenuInquilinos extends javax.swing.JPanel {
         modelo.setRowCount(0);
         componentShown(null);
     }//GEN-LAST:event_btnAceptar_modActionPerformed
+
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            int err = Consultas.exportar(con, "inquilino");
+
+            if (err == 0) {
+                JOptionPane.showMessageDialog(null, "Tabla exportada a CSV correctamente");
+            }
+            else {
+                throw new Exception();
+            }
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar exportar la tabla Inquilino", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

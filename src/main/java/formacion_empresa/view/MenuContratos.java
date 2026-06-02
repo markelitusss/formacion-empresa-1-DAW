@@ -258,6 +258,11 @@ public class MenuContratos extends javax.swing.JPanel {
         });
 
         btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -376,6 +381,8 @@ public class MenuContratos extends javax.swing.JPanel {
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
 
+        txtId.setEnabled(false);
+
         aceptar = 1;
     }//GEN-LAST:event_btnInsertarActionPerformed
 
@@ -385,6 +392,8 @@ public class MenuContratos extends javax.swing.JPanel {
         jFrame.pack();
         jFrame.setLocationRelativeTo(null);
         jFrame.setVisible(true);
+
+        txtId.setEnabled(true);
 
         aceptar = 2;
     }//GEN-LAST:event_btnModificarActionPerformed
@@ -424,6 +433,7 @@ public class MenuContratos extends javax.swing.JPanel {
         catch (ClosedByInterruptException e) {}
         
         habilitarBtns();
+        txtId.setEnabled(true);
         modelo.setRowCount(0);
         componentShown(null);
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -446,8 +456,11 @@ public class MenuContratos extends javax.swing.JPanel {
                 else if (id_ins == -3) {
                     throw new IndexOutOfBoundsException();
                 }
-
+ 
                 JOptionPane.showMessageDialog(null, "Contrato insertado con ID: " + id_ins, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El ID introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (IndexOutOfBoundsException e) {
                 JOptionPane.showMessageDialog(null, "El ID del inquilino o el código de la vivienda no existen", "Error", JOptionPane.ERROR_MESSAGE);
@@ -460,18 +473,21 @@ public class MenuContratos extends javax.swing.JPanel {
         else {
             try {
                 int id = Integer.parseInt(txtId.getText());
-                int id_inquilino = Integer.parseInt(txtIDinquilino.getText());
+                String id_inquilino = txtIDinquilino.getText();
                 String codigo_vivienda = txtCodigoVivienda.getText();
                 String fecha_inicio = txtFechaInicio.getText();
                 String fecha_fin = txtFechaFin.getText();
-                double precio = Double.parseDouble(txtPrecio.getText());
+                String precio = txtPrecio.getText();
 
                 Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
                 Contrato oldC = CRUDcontrato.consultar(con, id);
-                Contrato newC = new Contrato(id, id_inquilino, codigo_vivienda, fecha_inicio, fecha_fin, precio, oldC.getEstado());
+                Contrato newC = new Contrato(id, 0, codigo_vivienda, fecha_inicio, fecha_fin, 0, oldC.getEstado());
 
                 if (txtIDinquilino.getText().isBlank()) {
                     newC.setId_inquilino(oldC.getId_inquilino());
+                }
+                else {
+                    newC.setId_inquilino(Integer.parseInt(id_inquilino));
                 }
                 if (codigo_vivienda.isBlank()) {
                     newC.setCodigo_vivienda(oldC.getCodigo_vivienda());
@@ -485,6 +501,9 @@ public class MenuContratos extends javax.swing.JPanel {
                 if (txtPrecio.getText().isBlank()) {
                     newC.setPrecio(oldC.getPrecio());
                 }
+                else {
+                    newC.setPrecio(Double.parseDouble(precio));
+                }
 
                 int err = CRUDcontrato.actualizar(con, newC);
 
@@ -492,6 +511,9 @@ public class MenuContratos extends javax.swing.JPanel {
                 else if (err == -2) throw new NullPointerException();
                 else if (err == -3) throw new IndexOutOfBoundsException();
                 else JOptionPane.showMessageDialog(null, "Los datos han sido modificados correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El ID introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (NullPointerException e) {
                 JOptionPane.showMessageDialog(null, "El ID especificado no existe", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -506,10 +528,26 @@ public class MenuContratos extends javax.swing.JPanel {
 
         jFrame.setVisible(false);
         habilitarBtns();
-
         modelo.setRowCount(0);
         componentShown(null);
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            int err = Consultas.exportar(con, "contrata");
+
+            if (err == 0) {
+                JOptionPane.showMessageDialog(null, "Tabla exportada a CSV correctamente");
+            }
+            else {
+                throw new Exception();
+            }
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar exportar la tabla Contrata", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -260,10 +260,17 @@ public class MenuViviendas extends javax.swing.JPanel {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
 
             @SuppressWarnings("rawtypes")
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(TableViviendas);
@@ -297,6 +304,11 @@ public class MenuViviendas extends javax.swing.JPanel {
         });
 
         btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -486,7 +498,7 @@ public class MenuViviendas extends javax.swing.JPanel {
         if (aceptar == 1) {
             try {
                 String codigo = txtCodigo.getText();
-                int id_propietario = Integer.parseInt(txtIDpropietario.getText());
+                int id_propietario = Integer.valueOf(txtIDpropietario.getText());
                 String direccion = txtDireccion.getText();
                 double precio = Double.parseDouble(txtPrecio.getText());
                 int superficie = Integer.parseInt(txtSuperficie.getText());
@@ -516,6 +528,9 @@ public class MenuViviendas extends javax.swing.JPanel {
                 }
 
                 JOptionPane.showMessageDialog(null, "Vivienda insertada correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            }
+            catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Los campos numéricos deben tener valores enteros", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (NullPointerException e) {
                 JOptionPane.showMessageDialog(null, "Debes introducir al menos un codigo y un ID de propietario", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
@@ -606,6 +621,23 @@ public class MenuViviendas extends javax.swing.JPanel {
         modelo.setRowCount(0);
         componentShown(null);
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            int err = Consultas.exportar(con, "vivienda");
+
+            if (err == 0) {
+                JOptionPane.showMessageDialog(null, "Tabla exportada a CSV correctamente");
+            }
+            else {
+                throw new Exception();
+            }
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar exportar la tabla Vivienda", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
