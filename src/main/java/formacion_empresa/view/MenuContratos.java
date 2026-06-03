@@ -7,6 +7,7 @@ package formacion_empresa.view;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.nio.channels.ClosedByInterruptException;
+import java.time.LocalDate;
 import java.sql.*;
 
 import javax.swing.JOptionPane;
@@ -88,6 +89,7 @@ public class MenuContratos extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnExportar = new javax.swing.JButton();
+        btnCambiarEstado = new javax.swing.JButton();
 
         jFrame.setTitle("Contrato");
         jFrame.setAlwaysOnTop(true);
@@ -264,30 +266,44 @@ public class MenuContratos extends javax.swing.JPanel {
             }
         });
 
+        btnCambiarEstado.setText("Cambiar estado");
+        btnCambiarEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarEstadoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(btnAtras)
-                .addGap(578, 578, 578)
-                .addComponent(btnExportar))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(270, 270, 270)
-                .addComponent(jLabel1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(btnConsultar)
-                .addGap(111, 111, 111)
-                .addComponent(btnInsertar)
-                .addGap(119, 119, 119)
-                .addComponent(btnModificar)
-                .addGap(112, 112, 112)
-                .addComponent(btnEliminar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btnAtras)
+                        .addGap(578, 578, 578)
+                        .addComponent(btnExportar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(270, 270, 270)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(btnConsultar)
+                        .addGap(111, 111, 111)
+                        .addComponent(btnInsertar)
+                        .addGap(119, 119, 119)
+                        .addComponent(btnModificar)
+                        .addGap(112, 112, 112)
+                        .addComponent(btnEliminar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnCambiarEstado)
+                        .addGap(202, 202, 202)))
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,9 +321,12 @@ public class MenuContratos extends javax.swing.JPanel {
                     .addComponent(btnConsultar)
                     .addComponent(btnInsertar)
                     .addComponent(btnModificar)
-                    .addComponent(btnEliminar)))
+                    .addComponent(btnEliminar))
+                .addGap(42, 42, 42)
+                .addComponent(btnCambiarEstado)
+                .addContainerGap())
         );
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>
 
     public void componentShown(java.awt.event.ComponentEvent evt) {
         try {
@@ -456,6 +475,9 @@ public class MenuContratos extends javax.swing.JPanel {
                 else if (id_ins == -3) {
                     throw new IndexOutOfBoundsException();
                 }
+                else if (id_ins == -4) {
+                    throw new IllegalArgumentException();
+                }
  
                 JOptionPane.showMessageDialog(null, "Contrato insertado con ID: " + id_ins, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -467,6 +489,10 @@ public class MenuContratos extends javax.swing.JPanel {
             }
             catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar insertar en la tabla Contrata", "Error", JOptionPane.ERROR_MESSAGE);
+                System.out.println(e.getMessage());
+            }
+            catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Las fechas de inicio y fin no se pueden solapar con otro contrato para esta vivienda", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
         }
@@ -510,6 +536,7 @@ public class MenuContratos extends javax.swing.JPanel {
                 if (err == -1) throw new SQLException();
                 else if (err == -2) throw new NullPointerException();
                 else if (err == -3) throw new IndexOutOfBoundsException();
+                else if (err == -4) throw new IllegalArgumentException();
                 else JOptionPane.showMessageDialog(null, "Los datos han sido modificados correctamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (NumberFormatException e) {
@@ -523,6 +550,9 @@ public class MenuContratos extends javax.swing.JPanel {
             }
             catch (IndexOutOfBoundsException e) {
                 JOptionPane.showMessageDialog(null, "El ID del propietario o el código de la vivienda no existen", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Las fechas de inicio y fin no se pueden solapar con otro contrato para esta vivienda", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -549,6 +579,48 @@ public class MenuContratos extends javax.swing.JPanel {
         }
     }
 
+    private void btnCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            String idStr = JOptionPane.showInputDialog(null, "Introduzca el ID del contrato", "Cambiar estado", JOptionPane.PLAIN_MESSAGE);
+            if (idStr == null) {
+                throw new ClosedByInterruptException();
+            }
+
+            int id = Integer.parseInt(idStr);
+            LocalDate fechaActual = LocalDate.now();
+            int err; 
+
+            Contrato c = CRUDcontrato.consultar(con, id);
+            if (c.getEstado().equals("Pendiente")) {
+                err = CRUDcontrato.actualizar(con, new Contrato(c.getId(), c.getId_inquilino(), c.getCodigo_vivienda(), c.getFecha_inicio(), c.getFecha_fin(), c.getPrecio(), "Activo"));
+            }
+            else if (c.getEstado().equals("Activo")) {
+                err = CRUDcontrato.actualizar(con, new Contrato(c.getId(), c.getId_inquilino(), c.getCodigo_vivienda(), c.getFecha_inicio(), fechaActual.toString(), c.getPrecio(), "Vencido"));
+            }
+            else {
+                throw new IllegalArgumentException();
+            }
+
+            if (err == -1) throw new SQLException();
+            JOptionPane.showMessageDialog(null, "Estado cambiado correctamente para el contrato con ID = " + id, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+            
+        }
+        catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El valor introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar actualizar el estado en la tabla Contrata", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "El contrato ya está vencido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (ClosedByInterruptException e) {}
+
+        modelo.setRowCount(0);
+        componentShown(null);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TableContratos;
@@ -559,6 +631,7 @@ public class MenuContratos extends javax.swing.JPanel {
     private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnInsertar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnCambiarEstado;
     private javax.swing.JFrame jFrame;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

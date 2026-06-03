@@ -8,6 +8,7 @@ import java.sql.*;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import formacion_empresa.controller.Conexion;
 import formacion_empresa.controller.Consultas;
@@ -26,6 +27,8 @@ public class Estadisticas extends javax.swing.JPanel {
     public Estadisticas() {
         initComponents();
         modelo = (DefaultTableModel) jTable.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        jTable.setRowSorter(sorter);
         setVisible(false);
     }
 
@@ -210,6 +213,7 @@ public class Estadisticas extends javax.swing.JPanel {
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {                                         
         setVisible(false);
+        modelo.setRowCount(0);
     }                                        
                                           
     private void componentShown(java.awt.event.ComponentEvent evt) {                                
@@ -217,13 +221,13 @@ public class Estadisticas extends javax.swing.JPanel {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
             ResultSet rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata");
             rsContratosIniciados.next();
-            ResultSet rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE fecha_fin < NOW()");
+            ResultSet rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE fecha_fin < NOW() AND estado = 'Vencido'");
             rsContratosFinalizados.next();
             ResultSet rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata");
             rsViviendas.next();
 
-            ResultSet rsTabla = Consultas.consultarCustom(con, "SELECT p.id, COUNT(c.codigo_vivienda), ROUND(AVG(c.precio), 2), AVG(DATEDIFF(c.fecha_fin, c.fecha_inicio)) FROM propietario p INNER JOIN vivienda v ON p.id = v.id_propietario INNER JOIN contrata c ON v.codigo = c.codigo_vivienda GROUP BY p.id;");
-            ResultSet rsSinAlquiler = Consultas.consultarCustom(con, "SELECT COUNT() FROM vivienda LEFT JOIN contrata ON codigo = codigo_vivienda");
+            ResultSet rsTabla = Consultas.consultarCustom(con, "SELECT p.id, COUNT(c.codigo_vivienda), ROUND(AVG(c.precio), 2), AVG(DATEDIFF(c.fecha_fin, c.fecha_inicio)) FROM propietario p INNER JOIN vivienda v ON p.id = v.id_propietario LEFT JOIN contrata c ON v.codigo = c.codigo_vivienda GROUP BY p.id ORDER BY p.id;");
+            ResultSet rsSinAlquiler = Consultas.consultarCustom(con, "SELECT p.id, COUNT(codigo) FROM propietario p INNER JOIN vivienda v ON v.id_propietario = p.id LEFT JOIN contrata c ON c.codigo_vivienda = v.codigo WHERE c.fecha_inicio IS NULL GROUP BY p.id;");
             
             txtContratosIniciados.setText(String.valueOf(rsContratosIniciados.getInt(1)));
             txtContratosFinalizados.setText(String.valueOf(rsContratosFinalizados.getInt(1)));
@@ -233,6 +237,18 @@ public class Estadisticas extends javax.swing.JPanel {
             while (rsTabla.next()) {
                 modelo.addRow(new Object[]{rsTabla.getInt(1), rsTabla.getInt(2), 0, rsTabla.getDouble(3), rsTabla.getInt(4)});
             }
+
+            Object id;
+            rsSinAlquiler.next();
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                id = rsSinAlquiler.getInt(1);
+                if (modelo.getValueAt(i, 0) == id) {
+                    modelo.setValueAt(rsSinAlquiler.getInt(2), i, 2);
+                    rsSinAlquiler.next();
+                }
+            }
+
+            jTable.setModel(modelo);
         }
         catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al intentar cargar las estadisticas", "Error", JOptionPane.ERROR_MESSAGE);
@@ -240,7 +256,43 @@ public class Estadisticas extends javax.swing.JPanel {
     }
 
     private void btnAplicarActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        
+        try {
+            String mes = txtMes.getText();
+            String anyo = txtAnyo.getText();
+
+            Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
+            ResultSet rsContratosIniciados = null, rsContratosFinalizados = null, rsViviendas = null;
+
+            if (mes.isBlank() && !(anyo.isBlank())) {
+                rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_inicio) = " + anyo);
+                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_fin) = " + anyo + " AND estado = 'Vencido'");
+                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE YEAR(fecha_inicio) <= " + anyo + " AND YEAR(fecha_fin) >= " + anyo);
+            }
+            else if (!(mes.isBlank()) && anyo.isBlank()) {
+                rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE MONTH(fecha_inicio) = " + mes);
+                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE MONTH(fecha_fin) = " + mes + " AND estado = 'Vencido'");
+                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE MONTH(fecha_inicio) <= " + mes + " AND MONTH(fecha_fin) >= " + mes);
+            }
+            else {
+                rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_inicio) = " + anyo + " AND MONTH(fecha_inicio) = " + mes);
+                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_fin) = " + anyo + " AND MONTH(fecha_fin) = " + mes + " AND estado = 'Vencido'");
+                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE (YEAR(fecha_inicio) <= " + anyo + " AND MONTH(fecha_inicio) <= " + mes + ") AND (YEAR(fecha_fin) >= " + anyo + " AND MONTH(fecha_fin) >= " + mes + ")");
+            }
+
+            rsContratosIniciados.next();
+            rsContratosFinalizados.next();
+            rsViviendas.next();
+
+            txtContratosIniciados.setText(String.valueOf(rsContratosIniciados.getInt(1)));
+            txtContratosFinalizados.setText(String.valueOf(rsContratosFinalizados.getInt(1)));
+            txtViviendasAlquiler.setText(String.valueOf(rsViviendas.getInt(1)));
+            txtPrecioMedio.setText(String.valueOf(rsViviendas.getDouble(2)));
+
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al intentar cargar las estadisticas", "Error", JOptionPane.ERROR_MESSAGE);
+            System.out.println(e.getMessage());
+        }
     }                        
 
 

@@ -63,10 +63,10 @@ public class MenuContratos extends javax.swing.JPanel {
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnExportar = new javax.swing.JButton();
+        btnCambiarEstado = new javax.swing.JButton();
 
         jFrame.setTitle("Contrato");
         jFrame.setAlwaysOnTop(true);
-        jFrame.setPreferredSize(new java.awt.Dimension(400, 400));
         jFrame.setSize(new java.awt.Dimension(400, 400));
 
         jLabel2.setText("ID inquilino:");
@@ -225,30 +225,44 @@ public class MenuContratos extends javax.swing.JPanel {
 
         btnExportar.setText("Exportar");
 
+        btnCambiarEstado.setText("Cambiar estado");
+        btnCambiarEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarEstadoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(btnAtras)
-                .addGap(578, 578, 578)
-                .addComponent(btnExportar))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(270, 270, 270)
-                .addComponent(jLabel1))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(btnConsultar)
-                .addGap(111, 111, 111)
-                .addComponent(btnInsertar)
-                .addGap(119, 119, 119)
-                .addComponent(btnModificar)
-                .addGap(112, 112, 112)
-                .addComponent(btnEliminar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btnAtras)
+                        .addGap(578, 578, 578)
+                        .addComponent(btnExportar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(270, 270, 270)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(btnConsultar)
+                        .addGap(111, 111, 111)
+                        .addComponent(btnInsertar)
+                        .addGap(119, 119, 119)
+                        .addComponent(btnModificar)
+                        .addGap(112, 112, 112)
+                        .addComponent(btnEliminar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnCambiarEstado)
+                        .addGap(202, 202, 202)))
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,7 +280,10 @@ public class MenuContratos extends javax.swing.JPanel {
                     .addComponent(btnConsultar)
                     .addComponent(btnInsertar)
                     .addComponent(btnModificar)
-                    .addComponent(btnEliminar)))
+                    .addComponent(btnEliminar))
+                .addGap(42, 42, 42)
+                .addComponent(btnCambiarEstado)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -310,11 +327,16 @@ public class MenuContratos extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAceptarActionPerformed
 
+    private void btnCambiarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCambiarEstadoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable TableContratos;
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnCambiarEstado;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnExportar;

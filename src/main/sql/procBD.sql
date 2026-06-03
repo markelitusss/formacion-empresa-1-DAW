@@ -8,6 +8,7 @@
 -- -1. Error genérico
 -- -2. El ID/codigo solicitado no existe
 -- -3. La clave ajena no existe en la tabla de origen
+-- -4. Contrato con fechas inválidas
 
 -- Operaciones CRUD propietario
 DELIMITER //
@@ -473,6 +474,9 @@ sp: BEGIN
         LEAVE sp;
     END IF;
 
+    -- en caso de que ya haya un contrato para la vivienda indicada que se solape
+    
+
     SET @declaracion = 'INSERT INTO contrata VALUES (NULL, ?, ?, ?, ?, ?, ?)';
     PREPARE prepared_stmt FROM @declaracion;
 
@@ -500,7 +504,7 @@ CREATE PROCEDURE sp_upd_contrato(
     IN p_fecha_inicio DATE,
     IN p_fecha_fin DATE,
     IN p_precio DECIMAL(7, 2),
-    IN p_estado INT,
+    IN p_estado VARCHAR(50),
     OUT p_err INT
 )
 sp: BEGIN

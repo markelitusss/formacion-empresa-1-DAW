@@ -59,6 +59,9 @@ public class CRUDcontrato {
             else if (err == -3) {
                 throw new IndexOutOfBoundsException();
             }
+            else if (err == -4) {
+                throw new IllegalArgumentException();
+            }
 
             return id;
         }
@@ -67,6 +70,9 @@ public class CRUDcontrato {
         }
         catch (IndexOutOfBoundsException e) {
             return -3;
+        }
+        catch (IllegalArgumentException e) {
+            return -4;
         }
 
     }
@@ -96,6 +102,9 @@ public class CRUDcontrato {
             else if (err == -3) {
                 throw new IndexOutOfBoundsException();
             }
+            else if (err == -4) {
+                throw new IllegalArgumentException();
+            }
 
             return 0;
         }
@@ -107,6 +116,9 @@ public class CRUDcontrato {
         }
         catch (IndexOutOfBoundsException e) {
             return -3;
+        }
+        catch (IllegalArgumentException e) {
+            return -4;
         }
         
     }
