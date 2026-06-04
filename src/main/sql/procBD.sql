@@ -8,7 +8,7 @@
 -- -1. Error genérico
 -- -2. El ID/codigo solicitado no existe
 -- -3. La clave ajena no existe en la tabla de origen
--- -4. Contrato con fechas inválidas
+-- -4. Solapamiento de fechas en los contratos
 
 -- Operaciones CRUD propietario
 DELIMITER //
@@ -468,14 +468,17 @@ sp: BEGIN
         SET p_err = -1;
     END;
 
+    -- tratamiento de errores para controlar el solapamiento de fechas
+    DECLARE EXIT HANDLER FOR SQLSTATE '45000'
+    BEGIN
+        SET p_err = -4;
+    END;
+
     -- en caso de que el inquilino o la viivenda no existan
     IF p_id_inquilino NOT IN (SELECT id FROM inquilino) OR p_codigo_vivienda NOT IN (SELECT codigo FROM vivienda) THEN
         SET p_err = -3;
         LEAVE sp;
     END IF;
-
-    -- en caso de que ya haya un contrato para la vivienda indicada que se solape
-    
 
     SET @declaracion = 'INSERT INTO contrata VALUES (NULL, ?, ?, ?, ?, ?, ?)';
     PREPARE prepared_stmt FROM @declaracion;
@@ -516,6 +519,12 @@ sp: BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         SET p_err = -1;
+    END;
+
+    -- tratamiento de errores para controlar el solapamiento de fechas
+    DECLARE EXIT HANDLER FOR SQLSTATE '45000'
+    BEGIN
+        SET p_err = -4;
     END;
 
     -- en caso de que no exista el id solicitado

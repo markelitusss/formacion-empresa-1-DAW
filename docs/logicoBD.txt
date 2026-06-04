@@ -16,8 +16,12 @@ INQUILINO (id, DNI, nombre, email, telefono, mascota):
     PK: id
     UK: DNI
 
-CONTRATA (id_inquilino, codigo_vivienda, fecha_inicio, fecha_fin, precio, estado):
-    PK: (id_inquilino, codigo_vivienda)
+CONTRATA (id, id_inquilino, codigo_vivienda, fecha_inicio, fecha_fin, precio, estado):
+    PK: id
     FK: id_inquilino -> INQUILINO
     FK: codigo_vivienda -> VIVIENDA
+    FK: estado -> TIPO_ESTADO
+
+TIPO_ESTADO(id, estado)
+    PK: id
 

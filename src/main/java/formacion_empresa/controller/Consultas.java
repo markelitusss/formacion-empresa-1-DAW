@@ -9,6 +9,9 @@ package formacion_empresa.controller;
 import java.io.PrintWriter;
 import java.sql.*;
 
+/**
+ * @author Markel Canales Ramos
+ */
 public class Consultas {
     
     public static ResultSet consultarTodo(Connection con, String tabla) {

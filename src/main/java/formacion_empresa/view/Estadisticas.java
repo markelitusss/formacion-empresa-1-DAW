@@ -219,23 +219,25 @@ public class Estadisticas extends javax.swing.JPanel {
     private void componentShown(java.awt.event.ComponentEvent evt) {                                
         try {
             Connection con = Conexion.getConexion(Conexion.getUrl(), Conexion.getUser(), Conexion.getPassword());
-            ResultSet rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata");
+            ResultSet rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE fecha_inicio < NOW()");
             rsContratosIniciados.next();
-            ResultSet rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE fecha_fin < NOW() AND estado = 'Vencido'");
+            ResultSet rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE fecha_fin < NOW() AND estado = 3");
             rsContratosFinalizados.next();
-            ResultSet rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata");
+            ResultSet rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(*), ROUND(AVG(precio), 2) FROM contrata WHERE fecha_inicio < NOW() AND estado = 2");
             rsViviendas.next();
 
-            ResultSet rsTabla = Consultas.consultarCustom(con, "SELECT p.id, COUNT(c.codigo_vivienda), ROUND(AVG(c.precio), 2), AVG(DATEDIFF(c.fecha_fin, c.fecha_inicio)) FROM propietario p INNER JOIN vivienda v ON p.id = v.id_propietario LEFT JOIN contrata c ON v.codigo = c.codigo_vivienda GROUP BY p.id ORDER BY p.id;");
-            ResultSet rsSinAlquiler = Consultas.consultarCustom(con, "SELECT p.id, COUNT(codigo) FROM propietario p INNER JOIN vivienda v ON v.id_propietario = p.id LEFT JOIN contrata c ON c.codigo_vivienda = v.codigo WHERE c.fecha_inicio IS NULL GROUP BY p.id;");
+            ResultSet rsTabla1 = Consultas.consultarCustom(con, "SELECT id FROM propietario ORDER BY id");
+            ResultSet rsTabla2 = Consultas.consultarCustom(con, "SELECT p.id, COUNT(v.codigo) FROM propietario p LEFT JOIN vivienda v ON p.id = v.id_propietario GROUP BY p.id");
+            ResultSet rsTabla3 = Consultas.consultarCustom(con, "SELECT p.id, ROUND(AVG(c.precio), 2), AVG(DATEDIFF(c.fecha_fin, c.fecha_inicio)) FROM propietario p INNER JOIN vivienda v ON p.id = v.id_propietario LEFT JOIN contrata c ON c.codigo_vivienda = v.codigo GROUP BY p.id");
+            ResultSet rsSinAlquiler = Consultas.consultarCustom(con, "SELECT p.id, COUNT(v.codigo) FROM propietario p INNER JOIN vivienda v ON v.id_propietario = p.id LEFT JOIN contrata c ON c.codigo_vivienda = v.codigo WHERE c.id_inquilino IS NULL GROUP BY p.id");
             
             txtContratosIniciados.setText(String.valueOf(rsContratosIniciados.getInt(1)));
             txtContratosFinalizados.setText(String.valueOf(rsContratosFinalizados.getInt(1)));
             txtViviendasAlquiler.setText(String.valueOf(rsViviendas.getInt(1)));
             txtPrecioMedio.setText(String.valueOf(rsViviendas.getDouble(2)));
 
-            while (rsTabla.next()) {
-                modelo.addRow(new Object[]{rsTabla.getInt(1), rsTabla.getInt(2), 0, rsTabla.getDouble(3), rsTabla.getInt(4)});
+            while (rsTabla1.next() && rsTabla2.next() && rsTabla3.next()) {
+                modelo.addRow(new Object[]{rsTabla1.getInt(1), rsTabla2.getInt(2), 0, rsTabla3.getDouble(2), rsTabla3.getInt(3)});
             }
 
             Object id;
@@ -265,18 +267,18 @@ public class Estadisticas extends javax.swing.JPanel {
 
             if (mes.isBlank() && !(anyo.isBlank())) {
                 rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_inicio) = " + anyo);
-                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_fin) = " + anyo + " AND estado = 'Vencido'");
-                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE YEAR(fecha_inicio) <= " + anyo + " AND YEAR(fecha_fin) >= " + anyo);
+                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_fin) = " + anyo + " AND estado = 3");
+                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE YEAR(fecha_inicio) <= " + anyo + " AND YEAR(fecha_fin) >= " + anyo + " AND estado = 2");
             }
             else if (!(mes.isBlank()) && anyo.isBlank()) {
                 rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE MONTH(fecha_inicio) = " + mes);
-                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE MONTH(fecha_fin) = " + mes + " AND estado = 'Vencido'");
-                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE MONTH(fecha_inicio) <= " + mes + " AND MONTH(fecha_fin) >= " + mes);
+                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE MONTH(fecha_fin) = " + mes + " AND estado = 3");
+                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE MONTH(fecha_inicio) <= " + mes + " AND MONTH(fecha_fin) >= " + mes + " AND estado = 2");
             }
             else {
                 rsContratosIniciados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_inicio) = " + anyo + " AND MONTH(fecha_inicio) = " + mes);
-                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_fin) = " + anyo + " AND MONTH(fecha_fin) = " + mes + " AND estado = 'Vencido'");
-                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE (YEAR(fecha_inicio) <= " + anyo + " AND MONTH(fecha_inicio) <= " + mes + ") AND (YEAR(fecha_fin) >= " + anyo + " AND MONTH(fecha_fin) >= " + mes + ")");
+                rsContratosFinalizados = Consultas.consultarCustom(con, "SELECT COUNT(*) FROM contrata WHERE YEAR(fecha_fin) = " + anyo + " AND MONTH(fecha_fin) = " + mes + " AND estado = 3");
+                rsViviendas = Consultas.consultarCustom(con, "SELECT DISTINCT COUNT(codigo_vivienda), ROUND(AVG(precio), 2) FROM contrata WHERE (YEAR(fecha_inicio) <= " + anyo + " AND MONTH(fecha_inicio) <= " + mes + ") AND (YEAR(fecha_fin) >= " + anyo + " AND MONTH(fecha_fin) >= " + mes + ")" + " AND estado = 2");
             }
 
             rsContratosIniciados.next();

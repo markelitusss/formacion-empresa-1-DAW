@@ -383,7 +383,7 @@ public class MenuContratos extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "El valor introducido debe ser un número entero", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
         }
         catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al consultar la tabla Inquilino", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error al consultar la tabla Contrato", "Error", JOptionPane.ERROR_MESSAGE);
         }
         catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null, "El ID indicado no existe", "Error", JOptionPane.ERROR_MESSAGE);
@@ -478,7 +478,7 @@ public class MenuContratos extends javax.swing.JPanel {
                 else if (id_ins == -4) {
                     throw new IllegalArgumentException();
                 }
- 
+
                 JOptionPane.showMessageDialog(null, "Contrato insertado con ID: " + id_ins, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (NumberFormatException e) {
@@ -488,11 +488,10 @@ public class MenuContratos extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "El ID del inquilino o el código de la vivienda no existen", "Error", JOptionPane.ERROR_MESSAGE);
             }
             catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar insertar en la tabla Contrata", "Error", JOptionPane.ERROR_MESSAGE);
-                System.out.println(e.getMessage());
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al insertar en la tabla Contrato", "Error", JOptionPane.ERROR_MESSAGE);
             }
             catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(null, "Las fechas de inicio y fin no se pueden solapar con otro contrato para esta vivienda", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar actualizar en la tabla Contrata\nSugerencia: comprueba solapamiento de fechas y compatibilidad de mascotas", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
         }
@@ -546,13 +545,13 @@ public class MenuContratos extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "El ID especificado no existe", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
             catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar actualizar en la tabla Contrata", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al insertar en la tabla Contrato", "Error", JOptionPane.ERROR_MESSAGE);
             }
             catch (IndexOutOfBoundsException e) {
                 JOptionPane.showMessageDialog(null, "El ID del propietario o el código de la vivienda no existen", "Error", JOptionPane.ERROR_MESSAGE);
             }
             catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(null, "Las fechas de inicio y fin no se pueden solapar con otro contrato para esta vivienda", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error al intentar actualizar en la tabla Contrata\nSugerencia: comprueba solapamiento de fechas y compatibilidad de mascotas", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
 
