@@ -10,8 +10,18 @@ import java.sql.*;
 
 import formacion_empresa.model.Propietario;
 
+/**
+ * @author Markel Canales Ramos
+ */
 public class CRUDpropietario {
     
+    /**
+     * Method that executes the select procedure
+     * @param con Connection to the DB
+     * @param id The ID of the landlord to select on
+     * @return A Propietario object with the data of the selected landlord. The ID of the object will be -2 in case the selected landlord doesn't exist 
+     * @throws SQLException In case an SQL error occurs
+     */
     public static Propietario consultar(Connection con, int id) {
         try {
             String sql = "CALL sp_get_propietario(?, ?)";
@@ -40,6 +50,13 @@ public class CRUDpropietario {
         } 
     }
 
+    /**
+     * Method that executes the insert procedure
+     * @param con Connection to the DB
+     * @param p A Propietario object with the data of the landlord to insert
+     * @return The ID of the inserted landlord if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     */
     public static int insertar(Connection con, Propietario p) {
         try {
             String sql = "CALL sp_ins_propietario(?, ?, ?, ?, ?, ?)";
@@ -65,6 +82,14 @@ public class CRUDpropietario {
         }
     }
 
+    /**
+     * Method that executes the update procedure
+     * @param con Connection to the DB
+     * @param p A Propietario object with the data of the landlord to update
+     * @return 0 if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     * @throws NullPointerException If the landlord's ID doesn't exist in the DB, the method will return -2
+     */
     public static int actualizar(Connection con, Propietario p) {
         try {
             String sql = "CALL sp_upd_propietario(?, ?, ?, ?, ?, ?)";
@@ -96,6 +121,14 @@ public class CRUDpropietario {
         }
     }
 
+    /**
+     * Method that executes the delete procedure
+     * @param con Connection to the DB
+     * @param id The ID of the landlord to delete
+     * @return 0 if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     * @throws NullPointerException If the landlord's ID doesn't exist in the DB, the method will return -2
+     */
     public static int eliminar(Connection con, int id) {
         try {
             String sql = "CALL sp_del_propietario(?, ?)";

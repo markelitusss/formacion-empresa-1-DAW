@@ -32,96 +32,96 @@ public class Inquilino {
     // Getters y setters
 
     /**
-     * Devuelve el ID del inquilino
-     * @return El ID del inquilino
+     * Returns the tenant's ID
+     * @return The tenant's ID
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Cambia el valor del ID del inquilino
-     * @param id El nuevo ID del inquilino
+     * Changes the tenant's ID value
+     * @param id The new tenant's ID
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Devuelve el DNI del inquilino
-     * @return El DNI del inquilino
+     * Returns the tenant's DNI
+     * @return The tenant's DNI
      */
     public String getDNI() {
         return DNI;
     }
 
     /**
-     * Cambia el valor del DNI del inquilino
-     * @param DNI El nuevo DNI del inquilino
+     * Changes the tenant's DNI value
+     * @param DNI The new tenant's DNI
      */
     public void setDNI(String DNI) {
         this.DNI = DNI;
     }
 
     /**
-     * Devuelve el nombre del inquilino
-     * @return El nombre del inquilino
+     * Returns the name of the tenant
+     * @return The tenant's name
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * Cambia el valor del nombre del inquilino
-     * @param nombre El nuevo nombre del inquilino
+     * Changes the tenant's name value
+     * @param nombre The new tenant's name
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /**
-     * Devuelve el email del inquilino
-     * @return El email del inquilino
+     * Returns the tenant's email
+     * @return The tenant's email
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Cambia el valor del email del inquilino
-     * @param email El nuevo email del inquilino
+     * Changes the value of the tenant's email
+     * @param email The new tenant's email
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Devuelve el nº de telefono del inquilino
-     * @return El nº de telefono del inquilino
+     * Returns the tenant's telephone number
+     * @return The tenant's telephone number
      */
     public String getTelefono() {
         return telefono;
     }
 
     /**
-     * Cambia el valor del nº de telefono del inquilino
-     * @param telefono El nuevo nº de telefono del inquilino
+     * Changes the value of the tenant's telephone number
+     * @param telefono The new tenant's telephone number
      */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
     /**
-     * Devuelve si el inquilino tiene mascota o no
-     * @return true si tiene mascota o false si no tiene
+     * Returns if the tenant has pets or not
+     * @return true if the tenant has pets, false on the contrary case
      */
     public boolean getMascota() {
         return mascota;
     }
 
     /**
-     * Define si el inquilino tiene mascota o no
-     * @param mascota Valor booleano (tiene/no tiene mascota)
+     * Sets if the tenant has pets or not
+     * @param mascota Boolean value (true/false)
      */
     public void setMascota(boolean mascota) {
         this.mascota = mascota;

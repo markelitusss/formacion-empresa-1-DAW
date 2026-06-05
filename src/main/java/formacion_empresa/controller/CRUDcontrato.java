@@ -1,11 +1,27 @@
+/********************************/
+/*  Formación Empresa           */
+/*  Funciones CRUD contrato     */
+/*  Markel Canales Ramos 1º DAW */
+/********************************/
+
 package formacion_empresa.controller;
 
 import java.sql.*;
 
 import formacion_empresa.model.Contrato;
 
+/**
+ * @author Markel Canales Ramos
+ */
 public class CRUDcontrato {
     
+    /**
+     * Method that executes the select procedure
+     * @param con Connection to the DB
+     * @param id The ID of the contract to select on
+     * @return A Contrato object with the data of the selected contract. The ID of the object will be -2 in case the selected contract doesn't exist 
+     * @throws SQLException In case an SQL error occurs
+     */
     public static Contrato consultar(Connection con, int id) {
         try {
             String sql = "CALL sp_get_contrato(?, ?)";
@@ -13,12 +29,14 @@ public class CRUDcontrato {
 
             cs.setInt(1, id);
 
+            // primero obtenemos todos los datos menos el estado y luego realizamos una consulta aparte para obtener este ultimo
             cs.execute();
             ResultSet rs = cs.getResultSet();
             rs.next();
             ResultSet rsEstado = Consultas.consultarCustom(con, "SELECT estado FROM tipo_estado WHERE id = " + rs.getInt(7));
             rsEstado.next();
 
+            // montamos el objeto Contrato
             Contrato c = new Contrato(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDouble(6), rsEstado.getString(1));
 
             int err = cs.getInt(2);
@@ -37,6 +55,15 @@ public class CRUDcontrato {
         }
     }
 
+    /**
+     * Method that executes the insert procedure
+     * @param con Connection to the DB
+     * @param c A Contrato object with the data of the contract to insert
+     * @return The ID of the inserted contract if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     * @throws IndexOutOfBoundsException If the contract has a reference to a house or a tenant that doesn't exist, the method will return -3
+     * @throws IllegalArgumentException If the contract has overlapping dates with another contract for the same house or incompatibility with pets, the method will return -4
+     */
     public static int insertar(Connection con, Contrato c) {
         try {
             String sql = "CALL sp_ins_contrato(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -77,6 +104,16 @@ public class CRUDcontrato {
 
     }
 
+    /**
+     * Method that executes the update procedure
+     * @param con Connection to the DB
+     * @param c A Contrato object with the data of the contract to update
+     * @return 0 if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     * @throws NullPointerException If the contract's ID doesn't exist in the DB, the method will return -2
+     * @throws IndexOutOfBoundsException If the new contract has a reference to a house or a tenant that doesn't exist, the method will return -3
+     * @throws IllegalArgumentException If the new contract has overlapping dates with another contract for the same house or incompatibility with pets, the method will return -4-4
+     */
     public static int actualizar(Connection con, Contrato c) {
         try {
             String sql = "CALL sp_upd_contrato(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -123,6 +160,14 @@ public class CRUDcontrato {
         
     }
 
+    /**
+     * Method that executes the delete procedure
+     * @param con Connection to the DB
+     * @param id The ID of the contract to delete
+     * @return 0 if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     * @throws NullPointerException If the contract's ID doesn't exist in the DB, the method will return -2
+     */
     public static int eliminar(Connection con, int id) {
         try {
             String sql = "CALL sp_del_contrato(?, ?)";

@@ -30,80 +30,80 @@ public class Propietario {
     // Getters y setters
 
     /**
-     * Devuelve el ID del propietario
-     * @return El ID del propietario
+     * Returns the landlord's ID
+     * @return The landlord's ID
      */
     public int getId() {
         return id;
     }
 
     /**
-     * Cambia el valor del ID del propietario
-     * @param id El nuevo ID del propietario
+     * Changes the value of the landlord's ID
+     * @param id The new landlord's ID
      */
     public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Devuelve el DNI del propietario
-     * @return El DNI del propietario
+     * Returns the landlord's DNI
+     * @return The landlord's DNI
      */
     public String getDNI() {
         return DNI;
     }
 
     /**
-     * Cambia el valor del DNI del propietario
-     * @param DNI El nuevo DNI del propietario
+     * Changes the value of the landlord's DNI
+     * @param DNI The new landlord's DNI
      */
     public void setDNI(String DNI) {
         this.DNI = DNI;
     }
 
     /**
-     * Devuelve el nombre del propietario
-     * @return El nombre del propietario
+     * Returns the landlord's name
+     * @return The landlord's name
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * Cambia el valor del nombre del propietario
-     * @param nombre El nuevo nombre del propietario
+     * Changes the name of the landlord
+     * @param nombre The new landlord's name
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /**
-     * Devuelve el email del propietario
-     * @return El email del propietario
+     * Returns the landlord's email
+     * @return The landlord's email
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * Cambia el valor del email del propietario
-     * @param email El nuevo email del propietario
+     * Changes the value of the landlord's email
+     * @param email The new landlord's email
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * Devuelve el nº de telefono del propietario
-     * @return El telefono del propietario
+     * Returns the telephone number of the landlord
+     * @return The landlord's telephone number
      */
     public String getTelefono() {
         return telefono;
     }
 
     /**
-     * Cambia el valor del nº de telefono del propietario
-     * @param telefono El nuevo nº de telefono del propietario
+     * Changes the value of the landlord's telephone number
+     * @param telefono The new landlord's telephone number
      */
     public void setTelefono(String telefono) {
         this.telefono = telefono;

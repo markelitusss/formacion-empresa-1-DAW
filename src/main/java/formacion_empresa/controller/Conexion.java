@@ -18,11 +18,11 @@ public class Conexion {
     private static final String password = System.getenv("DB_PASSWORD");
     
     /**
-     * Función que devuelve una conexión abierta a una base de datos MySQL
-     * @param url La URL utilizada por JDBC para realizar la conexión
-     * @param user El usuario que accede a la base de datos
-     * @param pass La contraseña del usuario que accede a la base de datos
-     * @return Un objeto Connection con una conexión abierta
+     * Method that returns an open connection to a DB
+     * @param url The URL used by JDBC to connect to the DB
+     * @param user The username of the user that has access to the DB
+     * @param pass The password of the user that has access to the DB
+     * @return A Connection object with an open connection
      */
     public static Connection getConexion(String url, String user, String pass) {
         Connection con = null;
@@ -42,24 +42,24 @@ public class Conexion {
     }
 
     /**
-     * Devuelve la URL utilizada por JDBC para la conexión
-     * @return Un String que contiene la URL para conectarse a una BD
+     * Returns the URL used by JDBC for the connection
+     * @return A String that contains the URL to connect to the DB
      */
     public static String getUrl() {
         return url;
     }
 
     /**
-     * Devuelve el usuario utilizado para la conexión
-     * @return Un String que contiene el usuario para conectarse a una BD
+     * Returns the username used in the connection
+     * @return A String that contains the username used to connect to the DB
      */
     public static String getUser() {
         return user;
     }
 
     /**
-     * Devuelve la contraseña utilizada por el usuario para la conexión
-     * @return Un String que contiene la contraseña para el usuario que se conecta a la BD
+     * Returns the password used in the connection
+     * @return A String that contains the password used to connect to the DB
      */
     public static String getPassword() {
         return password;

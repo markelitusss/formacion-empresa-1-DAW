@@ -14,12 +14,20 @@ import java.sql.*;
  */
 public class Consultas {
     
+    /**
+     * Method that executes a query on a full table of the DB
+     * @param con Connection to the DB
+     * @param tabla The table's name used in the query
+     * @return A ResultSet with the query's results
+     * @throws SQLException If there is an SQL error during the query
+     */
     public static ResultSet consultarTodo(Connection con, String tabla) {
         try {
             String sql = "SELECT * FROM " + tabla;
 
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
+
             return rs;
         }
         catch (SQLException e) {
@@ -27,10 +35,18 @@ public class Consultas {
         }
     }
 
+    /**
+     * Method that executes the query specified in the "sql" parameter
+     * @param con Connection to the DB
+     * @param sql A valid SQL query
+     * @return A ResultSet with the query's results
+     * @throws SQLException If there is an SQL error during the query
+     */
     public static ResultSet consultarCustom(Connection con, String sql) {
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
+
             return rs;
         }
         catch (SQLException e) {
@@ -38,6 +54,13 @@ public class Consultas {
         }
     }
 
+    /**
+     * Method that exports a complete table to CSV format
+     * @param con Connection to the DB
+     * @param tabla The name of the table to export
+     * @return 0 if the export is done correctly
+     * @throws Exception If any error occurs during the export the method returns -1
+     */
     public static int exportar(Connection con, String tabla) {
         try (PrintWriter pw = new PrintWriter(tabla + ".csv")) {
             ResultSet rs = consultarTodo(con, tabla);

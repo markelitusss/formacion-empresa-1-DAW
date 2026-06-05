@@ -31,7 +31,7 @@ BEGIN
     SELECT COUNT(*) INTO v_numero_filas FROM contrata
     WHERE codigo_vivienda = NEW.codigo_vivienda
     AND (NEW.fecha_inicio <= fecha_fin AND NEW.fecha_fin >= fecha_inicio)
-    AND (NEW.fecha_inicio != OLD.fecha_inicio OR NEW.fecha_fin != OLD.fecha_fin);
+    AND (NEW.fecha_inicio != OLD.fecha_inicio AND NEW.fecha_fin != OLD.fecha_fin);
 
     IF v_numero_filas > 0 THEN
         SIGNAL SQLSTATE '45000' SET message_text = 'Solapamiento de fechas en la actualización';

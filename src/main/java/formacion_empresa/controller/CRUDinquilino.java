@@ -10,8 +10,18 @@ import java.sql.*;
 
 import formacion_empresa.model.Inquilino;
 
+/**
+ * @author Markel Canales Ramos
+ */
 public class CRUDinquilino {
     
+    /**
+     * Method that executes the select procedure
+     * @param con Connection to the DB
+     * @param id The ID of the tenant to select on
+     * @return A Inquilino object with the data of the selected tenant. The ID of the object will be -2 in case the selected tenant doesn't exist 
+     * @throws SQLException In case an SQL error occurs
+     */
     public static Inquilino consultar(Connection con, int id) {
         try {
             String sql = "CALL sp_get_inquilino(?, ?)";
@@ -40,6 +50,13 @@ public class CRUDinquilino {
         } 
     }
 
+    /**
+     * Method that executes the insert procedure
+     * @param con Connection to the DB
+     * @param i A Inquilino object with the data of the tenant to insert
+     * @return The ID of the inserted tenant if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     */
     public static int insertar(Connection con, Inquilino i) {
         try {
             String sql = "CALL sp_ins_inquilino(?, ?, ?, ?, ?, ?, ?)";
@@ -66,6 +83,14 @@ public class CRUDinquilino {
         }
     }
 
+    /**
+     * Method that executes the update procedure
+     * @param con Connection to the DB
+     * @param i A Inquilino object with the data of the tenant to update
+     * @return 0 if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     * @throws NullPointerException If the tenant's ID doesn't exist in the DB, the method will return -2
+     */
     public static int actualizar(Connection con, Inquilino i) {
         try {
             String sql = "CALL sp_upd_inquilino(?, ?, ?, ?, ?, ?, ?)";
@@ -98,6 +123,14 @@ public class CRUDinquilino {
         }
     }
 
+    /**
+     * Method that executes the delete procedure
+     * @param con Connection to the DB
+     * @param id The ID of the tenant to delete
+     * @return 0 if no errors occur
+     * @throws SQLException If any SQL error occurs, the method will return -1
+     * @throws NullPointerException If the tenant's ID doesn't exist in the DB, the method will return -2
+     */
     public static int eliminar(Connection con, int id) {
         try {
             String sql = "CALL sp_del_inquilino(?, ?)";
